@@ -1,23 +1,63 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import HelloWorldFeature from "./features/HelloWorldFeature/HelloWorldFeature";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <HelloWorldFeature />
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          screenOptions={{ tabBarActiveTintColor: "#dc1c32", headerShown: false }}>
+          <Tab.Screen
+            name="Home"
+            children={() => (
+              <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows home tab) */}
+                <HelloWorldFeature />
+              </SafeAreaScreenWrapper>
+            )}
+            options={{
+              tabBarLabel: "Home",
+              tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Bookings"
+            children={() => (
+              <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows bookings tab) */}
+                <HelloWorldFeature />
+              </SafeAreaScreenWrapper>
+            )}
+            options={{
+              tabBarLabel: "Bookings",
+              tabBarIcon: ({ color, size }) => <AntDesign name="book" size={size} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            children={() => (
+              <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows profile tab) */}
+                <HelloWorldFeature />
+              </SafeAreaScreenWrapper>
+            )}
+            options={{
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="user-circle" size={size} color={color} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
