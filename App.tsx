@@ -19,6 +19,7 @@ export default function App() {
             name="Home"
             children={() => (
               <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows home tab) */}
                 <HelloWorldFeature />
               </SafeAreaScreenWrapper>
             )}
@@ -31,6 +32,7 @@ export default function App() {
             name="Bookings"
             children={() => (
               <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows bookings tab) */}
                 <HelloWorldFeature />
               </SafeAreaScreenWrapper>
             )}
@@ -43,6 +45,7 @@ export default function App() {
             name="Profile"
             children={() => (
               <SafeAreaScreenWrapper>
+                {/* TODO: change this HelloWorldFeature with correct component (components which shows profile tab) */}
                 <HelloWorldFeature />
               </SafeAreaScreenWrapper>
             )}
