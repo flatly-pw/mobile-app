@@ -1,3 +1,6 @@
+// Why this import is necessary? See: https://reactnavigation.org/docs/stack-navigator/#installation
+import "react-native-gesture-handler";
+
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -5,6 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import HelloWorldFeature from "./features/HelloWorldFeature/HelloWorldFeature";
+import HomeTab from "./features/HomeTab/HomeTab";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,12 +21,7 @@ export default function App() {
           screenOptions={{ tabBarActiveTintColor: "#dc1c32", headerShown: false }}>
           <Tab.Screen
             name="Home"
-            children={() => (
-              <SafeAreaScreenWrapper>
-                {/* TODO: change this HelloWorldFeature with correct component (components which shows home tab) */}
-                <HelloWorldFeature />
-              </SafeAreaScreenWrapper>
-            )}
+            component={HomeTab}
             options={{
               tabBarLabel: "Home",
               tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,

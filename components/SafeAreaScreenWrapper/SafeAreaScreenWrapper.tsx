@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface SafeAreaScreenWrapperProps {
-  children: React.JSX.Element;
+  children: React.JSX.Element | React.JSX.Element[];
 }
 
 const SafeAreaScreenWrapper = ({ children }: SafeAreaScreenWrapperProps) => {
