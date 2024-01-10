@@ -1,3 +1,6 @@
+// Why this import is necessary? See: https://reactnavigation.org/docs/stack-navigator/#installation
+import "react-native-gesture-handler";
+
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
