@@ -6,7 +6,12 @@ import BasicFilter from "./BasicFilter/BasicFilter";
 import FlatOfferList from "./FlatOfferList/FlatOfferList";
 import SafeAreaScreenWrapper from "../../components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 
-const HomeTab = () => {
+interface HomeTabProps {
+  route: any;
+  navigation: any;
+}
+
+const HomeTab = ({ route, navigation }: HomeTabProps) => {
   const Stack = createStackNavigator();
 
   return (
