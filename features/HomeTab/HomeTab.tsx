@@ -37,9 +37,9 @@ const HomeTab = ({ route, navigation }: HomeTabProps) => {
       />
       <Stack.Screen
         name="BasicFilter"
-        children={() => (
+        children={(props) => (
           <SafeAreaScreenWrapper>
-            <BasicFilter />
+            <BasicFilter {...props} bottomTabsRoute={route} bottomTabsNavigation={navigation} />
           </SafeAreaScreenWrapper>
         )}
       />
