@@ -21,7 +21,7 @@ export default function App() {
           screenOptions={{ tabBarActiveTintColor: "#dc1c32", headerShown: false }}>
           <Tab.Screen
             name="Home"
-            component={HomeTab}
+            children={(props) => <HomeTab {...props} />}
             options={{
               tabBarLabel: "Home",
               tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
