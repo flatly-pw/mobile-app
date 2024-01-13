@@ -2,7 +2,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { Button } from "@rneui/themed";
 import { View } from "react-native";
 
-const Footer = ({ navigation, clearHandler }) => {
+interface HeaderProp {
+  navigation: any;
+  clearHandler: () => void;
+  isSearching: boolean;
+}
+
+const Footer = ({ navigation, clearHandler, isSearching }: HeaderProp) => {
   return (
     <View
       style={{
@@ -11,6 +17,7 @@ const Footer = ({ navigation, clearHandler }) => {
         marginTop: 10,
         paddingLeft: 15,
         paddingRight: 15,
+        display: isSearching ? "none" : "flex",
       }}>
       <View style={{ flex: 1 }}>
         <Button

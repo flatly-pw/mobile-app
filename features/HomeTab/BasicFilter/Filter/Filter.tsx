@@ -1,8 +1,9 @@
-import { SearchBar } from "@rneui/themed";
+import { Ionicons } from "@expo/vector-icons";
+import { ListItem, SearchBar } from "@rneui/themed";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 
-import { CompanionType } from "../BasicFilter";
+import { CompanionType, DestinationType } from "../BasicFilter";
 import Companion from "../Companion/Companion";
 
 interface FilterProps {
@@ -14,6 +15,9 @@ interface FilterProps {
   searchHandler: (newSearch: string) => void;
   companions: { [key in CompanionType]: number };
   companionsHandler: (companion: CompanionType, numberOfCompanions: number) => void;
+  isSearching: boolean;
+  isSearchingHandler: (newIsSearching: boolean) => void;
+  destinations: DestinationType[];
 }
 
 const Filter = ({
@@ -25,6 +29,9 @@ const Filter = ({
   searchHandler,
   companions,
   companionsHandler,
+  isSearching,
+  isSearchingHandler,
+  destinations,
 }: FilterProps) => {
   const calendarOnPressHandler = (day: DateData) => {
     if (startingDay === null) {
@@ -71,6 +78,56 @@ const Filter = ({
     return dates;
   };
 
+  if (isSearching) {
+    return (
+      <View
+        style={{
+          padding: 10,
+          marginTop: 10,
+        }}>
+        <SearchBar
+          lightTheme
+          placeholder="Search destinations"
+          onChangeText={(newSearch) => {
+            searchHandler(newSearch);
+          }}
+          value={search}
+          containerStyle={{
+            borderRadius: 10,
+          }}
+          inputContainerStyle={{
+            backgroundColor: "transparent",
+          }}
+          onSubmitEditing={() => {
+            isSearchingHandler(false);
+          }}
+          autoFocus
+        />
+        {destinations.map((destination) => {
+          const searchText =
+            destination.city.length > 0
+              ? `${destination.city}, ${destination.country}`
+              : destination.country;
+          return (
+            <ListItem
+              bottomDivider
+              containerStyle={{ backgroundColor: "transparent" }}
+              onPress={() => {
+                searchHandler(searchText);
+                isSearchingHandler(false);
+              }}
+              key={destination.id}>
+              <Ionicons name="location-outline" size={32} color="black" />
+              <ListItem.Content>
+                <ListItem.Title>{searchText}</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          );
+        })}
+      </View>
+    );
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -87,6 +144,9 @@ const Filter = ({
           }}
           inputContainerStyle={{
             backgroundColor: "transparent",
+          }}
+          onFocus={() => {
+            isSearchingHandler(true);
           }}
         />
       </View>

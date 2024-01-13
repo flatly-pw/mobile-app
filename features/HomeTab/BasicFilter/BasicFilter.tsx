@@ -21,6 +21,40 @@ const defaultCompanions = {
   pets: 0,
 };
 
+export type DestinationType = {
+  id: number;
+  city: string;
+  country: string;
+};
+
+const defaultDestinations: DestinationType[] = [
+  {
+    id: 0,
+    city: "Paris",
+    country: "France",
+  },
+  {
+    id: 1,
+    city: "Prague",
+    country: "Czechia",
+  },
+  {
+    id: 2,
+    city: "Poznań",
+    country: "France",
+  },
+  {
+    id: 3,
+    city: "",
+    country: "Poland",
+  },
+  {
+    id: 4,
+    city: "Porto",
+    country: "Portugal",
+  },
+];
+
 const BasicFilter = ({
   route,
   navigation,
@@ -30,6 +64,8 @@ const BasicFilter = ({
   const [startingDay, setStartingDay] = useState<DateData | null>(null);
   const [endingDay, setEndingDay] = useState<DateData | null>(null);
   const [search, setSearch] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [destinations, setDestinations] = useState(defaultDestinations);
   const [companions, setCompanions] = useState(defaultCompanions);
 
   useEffect(() => {
@@ -67,6 +103,10 @@ const BasicFilter = ({
     setCompanions({ ...companions, [companion]: numberOfCompanions });
   };
 
+  const isSearchingHandler = (newIsSearching: boolean) => {
+    setIsSearching(newIsSearching);
+  };
+
   return (
     <View
       style={{
@@ -74,7 +114,11 @@ const BasicFilter = ({
         flexDirection: "column",
         height: "100%",
       }}>
-      <Header navigation={navigation} />
+      <Header
+        navigation={navigation}
+        isSearching={isSearching}
+        isSearchingHandler={isSearchingHandler}
+      />
       <Filter
         startingDay={startingDay}
         startingDayHandler={startingDayHandler}
@@ -84,8 +128,11 @@ const BasicFilter = ({
         searchHandler={searchHandler}
         companions={companions}
         companionsHandler={companionsHandler}
+        isSearching={isSearching}
+        isSearchingHandler={isSearchingHandler}
+        destinations={destinations}
       />
-      <Footer navigation={navigation} clearHandler={clearHandler} />
+      <Footer navigation={navigation} clearHandler={clearHandler} isSearching={isSearching} />
     </View>
   );
 };
