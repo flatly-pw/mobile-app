@@ -37,12 +37,8 @@ const Filter = ({
           endingDayHandler(day);
         }
       } else {
-        if (startingDay.timestamp >= day.timestamp) {
-          startingDayHandler(day);
-          endingDayHandler(null);
-        } else {
-          endingDayHandler(day);
-        }
+        startingDayHandler(day);
+        endingDayHandler(null);
       }
     }
   };
