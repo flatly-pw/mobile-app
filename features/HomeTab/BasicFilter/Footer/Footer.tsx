@@ -1,6 +1,5 @@
-import { AntDesign } from "@expo/vector-icons";
-import { Button } from "@rneui/themed";
 import { View } from "react-native";
+import { useTheme, Button } from "react-native-paper";
 
 interface HeaderProp {
   navigation: any;
@@ -9,36 +8,35 @@ interface HeaderProp {
 }
 
 const Footer = ({ navigation, clearHandler, isSearching }: HeaderProp) => {
+  const theme = useTheme();
+
   return (
     <View
       style={{
-        flexDirection: "row",
         alignItems: "center",
+        flexDirection: "row",
+        borderTopWidth: 1,
+        borderTopColor: theme.colors.backdrop,
         marginTop: 10,
-        paddingLeft: 15,
-        paddingRight: 15,
+        padding: 10,
         display: isSearching ? "none" : "flex",
       }}>
-      <View style={{ flex: 1 }}>
-        <Button
-          type="clear"
-          title="Clear all"
-          containerStyle={{ alignSelf: "flex-start" }}
-          onPress={clearHandler}
-        />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Button
-          type="outline"
-          containerStyle={{ alignSelf: "flex-end" }}
-          buttonStyle={{ borderRadius: 10 }}
-          onPress={() => {
-            navigation.navigate("FlatOfferList");
-          }}>
-          <AntDesign name="search1" size={24} color="black" />
-          Search
-        </Button>
-      </View>
+      <Button
+        style={{ flex: 1, alignItems: "flex-start" }}
+        labelStyle={theme.fonts.titleLarge}
+        onPress={clearHandler}>
+        Clear all
+      </Button>
+      <Button
+        style={{ alignItems: "flex-end" }}
+        mode="outlined"
+        labelStyle={theme.fonts.titleLarge}
+        onPress={() => {
+          navigation.navigate("FlatOfferList");
+        }}
+        icon="magnify">
+        Search
+      </Button>
     </View>
   );
 };
