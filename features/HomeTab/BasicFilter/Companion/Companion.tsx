@@ -1,5 +1,5 @@
-import { AntDesign } from "@expo/vector-icons";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { IconButton, Text } from "react-native-paper";
 
 interface CompanionProps {
   name: string;
@@ -15,40 +15,29 @@ const Companion = ({ name, description, value, valueHandler }: CompanionProps) =
         flexDirection: "row",
       }}>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 24 }}>{name}</Text>
-        <Text style={{ fontSize: 12 }}>{description}</Text>
+        <Text variant="titleLarge">{name}</Text>
+        <Text variant="bodySmall">{description}</Text>
       </View>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
         }}>
-        <AntDesign
-          name="minuscircleo"
+        <IconButton
+          icon="minus-circle-outline"
           size={28}
-          color={value === 0 ? "gray" : "black"}
-          onPress={() => {
-            valueHandler(value - 1);
-          }}
+          onPress={() => valueHandler(value - 1)}
           disabled={value === 0}
         />
         <Text
+          variant="titleLarge"
           style={{
-            padding: 10,
-            fontSize: 24,
-            width: 60,
+            width: 30,
             textAlign: "center",
           }}>
           {value}
         </Text>
-        <AntDesign
-          name="pluscircleo"
-          size={28}
-          color="black"
-          onPress={() => {
-            valueHandler(value + 1);
-          }}
-        />
+        <IconButton icon="plus-circle-outline" size={28} onPress={() => valueHandler(value + 1)} />
       </View>
     </View>
   );
