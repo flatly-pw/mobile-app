@@ -1,8 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
-import { ListItem, SearchBar } from "@rneui/themed";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { ListItem } from "@rneui/themed";
+import { ScrollView, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
+import { Icon, Searchbar, useTheme } from "react-native-paper";
 
+import FilterItem from "./FilterItem/FilterItem";
 import { CompanionType, DestinationType } from "../BasicFilter";
 import Companion from "../Companion/Companion";
 
@@ -33,6 +34,8 @@ const Filter = ({
   isSearchingHandler,
   destinations,
 }: FilterProps) => {
+  const theme = useTheme();
+
   const calendarOnPressHandler = (day: DateData) => {
     if (startingDay === null) {
       startingDayHandler(day);
@@ -69,7 +72,7 @@ const Filter = ({
       const day = ("0" + date.getDate()).slice(-2);
       const dateString = `${year}-${month}-${day}`;
       dates[dateString] = {
-        color: "#00adf5",
+        color: theme.colors.primaryContainer,
         startingDay: dateString === startingDay.dateString,
         endingDay: dateString === (endingDay ?? startingDay).dateString,
       };
@@ -85,18 +88,11 @@ const Filter = ({
           padding: 10,
           marginTop: 10,
         }}>
-        <SearchBar
-          lightTheme
+        <Searchbar
+          value={search}
           placeholder="Search destinations"
           onChangeText={(newSearch) => {
             searchHandler(newSearch);
-          }}
-          value={search}
-          containerStyle={{
-            borderRadius: 10,
-          }}
-          inputContainerStyle={{
-            backgroundColor: "transparent",
           }}
           onSubmitEditing={() => {
             isSearchingHandler(false);
@@ -117,7 +113,7 @@ const Filter = ({
                 isSearchingHandler(false);
               }}
               key={destination.id}>
-              <Ionicons name="location-outline" size={32} color="black" />
+              <Icon source="map-marker-outline" size={32} />
               <ListItem.Content>
                 <ListItem.Title>{searchText}</ListItem.Title>
               </ListItem.Content>
@@ -130,36 +126,31 @@ const Filter = ({
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.containerHeader}>Where to?</Text>
-        <SearchBar
-          lightTheme
+      <FilterItem label="Where to?">
+        <Searchbar
+          value={search}
           placeholder="Search destinations"
           onChangeText={(newSearch) => {
             searchHandler(newSearch);
           }}
-          value={search}
-          containerStyle={{
-            borderRadius: 10,
-          }}
-          inputContainerStyle={{
-            backgroundColor: "transparent",
-          }}
           onFocus={() => {
             isSearchingHandler(true);
           }}
+          showSoftInputOnFocus={false}
         />
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.containerHeader}>When?</Text>
+      </FilterItem>
+      <FilterItem label="When?">
         <Calendar
           onDayPress={calendarOnPressHandler}
           markingType="period"
           markedDates={calendarGenerateMarkedDays()}
+          style={{
+            borderRadius: 10,
+          }}
+          theme={{ arrowColor: theme.colors.primary }}
         />
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.containerHeader}>Who?</Text>
+      </FilterItem>
+      <FilterItem label="Who?">
         <Companion
           name="Adults"
           description="Ages 13 or above"
@@ -178,22 +169,9 @@ const Filter = ({
           value={companions.pets}
           valueHandler={(newValue) => companionsHandler("pets", newValue)}
         />
-      </View>
+      </FilterItem>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 10,
-  },
-  containerHeader: {
-    fontSize: 32,
-    marginBottom: 10,
-  },
-});
 
 export default Filter;

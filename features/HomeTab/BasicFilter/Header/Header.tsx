@@ -1,5 +1,6 @@
 import { AntDesign, Feather } from "@expo/vector-icons";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { IconButton, useTheme, Text } from "react-native-paper";
 
 interface HeaderProp {
   navigation: any;
@@ -8,37 +9,45 @@ interface HeaderProp {
 }
 
 const Header = ({ navigation, isSearching, isSearchingHandler }: HeaderProp) => {
+  const theme = useTheme();
+
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
+        marginTop: 10,
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.backdrop,
       }}>
       {isSearching ? (
-        <Feather
-          name="arrow-left-circle"
-          size={24}
-          color="black"
+        <IconButton
+          icon="arrow-left-thin-circle-outline"
+          iconColor={theme.colors.primary}
+          size={32}
           onPress={() => {
             isSearchingHandler(false);
           }}
+          style={{ zIndex: 1 }}
         />
       ) : (
-        <AntDesign
-          name="closecircleo"
-          size={24}
-          color="black"
+        <IconButton
+          icon="close-circle-outline"
+          iconColor={theme.colors.primary}
+          size={32}
           onPress={() => {
             navigation.navigate("FlatOfferList");
           }}
+          style={{ zIndex: 1 }}
         />
       )}
       <Text
+        variant="displaySmall"
         style={{
           textAlign: "center",
-          textAlignVertical: "center",
-          flex: 1,
-          fontSize: 28,
+          position: "absolute",
+          width: "100%",
         }}>
         Stays
       </Text>
