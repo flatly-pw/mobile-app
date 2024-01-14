@@ -10,8 +10,8 @@ const Footer = () => {
         flexDirection: "row",
         borderTopWidth: 1,
         borderTopColor: theme.colors.backdrop,
-        paddingTop: 10,
         marginTop: 10,
+        padding: 10,
       }}>
       <Button
         style={{ flex: 1, alignItems: "flex-start" }}
