@@ -10,6 +10,9 @@ interface PriceRangeProps {
   sliderValueHandler: (newValue: SliderValueType) => void;
 }
 
+const minPriceRange = 20;
+const maxPriceRange = 100;
+
 const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
   const theme = useTheme();
 
@@ -27,8 +30,8 @@ const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
         }}
         selectedStyle={{ backgroundColor: theme.colors.primary }}
         allowOverlap
-        min={20}
-        max={100}
+        min={minPriceRange}
+        max={maxPriceRange}
         sliderLength={useWindowDimensions().width - 40}
       />
       <View
@@ -41,7 +44,10 @@ const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
         </View>
         <View style={{ flex: 1, alignItems: "center" }}>
           <Text>Maximum</Text>
-          <Text>${sliderValue.end}</Text>
+          <Text>
+            ${sliderValue.end}
+            {sliderValue.end === maxPriceRange ? "+" : ""}
+          </Text>
         </View>
       </View>
     </FilterItem>
