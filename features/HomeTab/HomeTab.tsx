@@ -45,9 +45,9 @@ const HomeTab = ({ route, navigation }: HomeTabProps) => {
       />
       <Stack.Screen
         name="AdvancedFilter"
-        children={() => (
+        children={(props) => (
           <SafeAreaScreenWrapper>
-            <AdvancedFilter />
+            <AdvancedFilter {...props} bottomTabsRoute={route} bottomTabsNavigation={navigation} />
           </SafeAreaScreenWrapper>
         )}
       />

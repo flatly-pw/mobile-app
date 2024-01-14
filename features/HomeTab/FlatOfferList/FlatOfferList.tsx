@@ -1,7 +1,7 @@
-import { Octicons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
 import { useCallback, useState } from "react";
-import { View, Pressable, FlatList, RefreshControl } from "react-native";
+import { View, FlatList, RefreshControl } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
 import FlatOffer from "../../../interfaces/FlatOffer";
@@ -22,6 +22,8 @@ for (let i = 0; i < 10; ++i) {
 }
 
 const FlatOfferList = ({ route, navigation }) => {
+  const theme = useTheme();
+
   const [flatOffers, setFlatOffers] = useState<FlatOffer[]>(defaultFlatOffers);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -61,12 +63,14 @@ const FlatOfferList = ({ route, navigation }) => {
           }}
           showSoftInputOnFocus={false}
         />
-        <Pressable
+        <IconButton
+          icon="filter-variant"
+          iconColor={theme.colors.primary}
+          size={32}
           onPress={() => {
             navigation.navigate("AdvancedFilter");
-          }}>
-          <Octicons name="filter" size={24} color="black" style={{ paddingLeft: 10 }} />
-        </Pressable>
+          }}
+        />
       </View>
       <FlatList
         data={flatOffers}
