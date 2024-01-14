@@ -1,7 +1,12 @@
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
-const Footer = () => {
+interface FooterProps {
+  navigation: any;
+  clearHandler: () => void;
+}
+
+const Footer = ({ navigation, clearHandler }: FooterProps) => {
   const theme = useTheme();
 
   return (
@@ -16,14 +21,16 @@ const Footer = () => {
       <Button
         style={{ flex: 1, alignItems: "flex-start" }}
         labelStyle={theme.fonts.titleLarge}
-        onPress={() => {}}>
+        onPress={clearHandler}>
         Clear all
       </Button>
       <Button
         style={{ alignItems: "flex-end" }}
         mode="outlined"
         labelStyle={theme.fonts.titleLarge}
-        onPress={() => {}}>
+        onPress={() => {
+          navigation.navigate("FlatOfferList");
+        }}>
         Show 873 flats
       </Button>
     </View>

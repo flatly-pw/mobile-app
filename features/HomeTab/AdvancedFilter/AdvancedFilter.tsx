@@ -145,6 +145,17 @@ const AdvancedFilter = ({
     });
   }, [bottomTabsNavigation, navigation]);
 
+  const clearHandler = () => {
+    setTypeOfPlace("0");
+    setSliderValue(defaultSliderValue);
+    setBedrooms("0");
+    setBeds("0");
+    setBathrooms("0");
+    setRating("0");
+    setAccomodation("0");
+    setAmenities(defaultAmenities);
+  };
+
   const typeOfPlaceHandler = (newValue: string) => {
     setTypeOfPlace(newValue);
   };
@@ -204,7 +215,7 @@ const AdvancedFilter = ({
         />
         <Amenities amenities={amenities} amenitiesHandler={amenitiesHandler} />
       </ScrollView>
-      <Footer />
+      <Footer navigation={navigation} clearHandler={clearHandler} />
     </View>
   );
 };
