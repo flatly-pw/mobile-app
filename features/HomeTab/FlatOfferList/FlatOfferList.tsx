@@ -1,7 +1,6 @@
-import { SearchBar } from "@rneui/themed";
 import { useCallback, useState } from "react";
 import { View, FlatList, RefreshControl } from "react-native";
-import { IconButton, useTheme } from "react-native-paper";
+import { IconButton, Searchbar, useTheme } from "react-native-paper";
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
 import FlatOffer from "../../../interfaces/FlatOffer";
@@ -48,18 +47,14 @@ const FlatOfferList = ({ route, navigation }) => {
           paddingBottom: 10,
           alignItems: "center",
         }}>
-        <SearchBar
-          lightTheme
+        <Searchbar
+          value=""
           placeholder="Where to?"
           onPressIn={() => {
             navigation.navigate("BasicFilter");
           }}
-          containerStyle={{
-            borderRadius: 100,
+          style={{
             flex: 10,
-          }}
-          inputContainerStyle={{
-            backgroundColor: "transparent",
           }}
           showSoftInputOnFocus={false}
         />
