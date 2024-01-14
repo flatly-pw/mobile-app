@@ -12,6 +12,7 @@ const Footer = ({ navigation, clearHandler }: FooterProps) => {
   return (
     <View
       style={{
+        alignItems: "center",
         flexDirection: "row",
         borderTopWidth: 1,
         borderTopColor: theme.colors.backdrop,
