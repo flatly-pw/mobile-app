@@ -108,12 +108,7 @@ const BasicFilter = ({
   };
 
   return (
-    <View
-      style={{
-        padding: 10,
-        flexDirection: "column",
-        height: "100%",
-      }}>
+    <View style={{ height: "100%" }}>
       <Header
         navigation={navigation}
         isSearching={isSearching}
