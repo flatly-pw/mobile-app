@@ -1,7 +1,7 @@
 import { ListItem } from "@rneui/themed";
 import { ScrollView, View } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
-import { Icon, Searchbar } from "react-native-paper";
+import { Icon, Searchbar, useTheme } from "react-native-paper";
 
 import FilterItem from "./FilterItem/FilterItem";
 import { CompanionType, DestinationType } from "../BasicFilter";
@@ -34,6 +34,8 @@ const Filter = ({
   isSearchingHandler,
   destinations,
 }: FilterProps) => {
+  const theme = useTheme();
+
   const calendarOnPressHandler = (day: DateData) => {
     if (startingDay === null) {
       startingDayHandler(day);
@@ -70,7 +72,7 @@ const Filter = ({
       const day = ("0" + date.getDate()).slice(-2);
       const dateString = `${year}-${month}-${day}`;
       dates[dateString] = {
-        color: "#00adf5",
+        color: theme.colors.primaryContainer,
         startingDay: dateString === startingDay.dateString,
         endingDay: dateString === (endingDay ?? startingDay).dateString,
       };
@@ -142,6 +144,10 @@ const Filter = ({
           onDayPress={calendarOnPressHandler}
           markingType="period"
           markedDates={calendarGenerateMarkedDays()}
+          style={{
+            borderRadius: 10,
+          }}
+          theme={{ arrowColor: theme.colors.primary }}
         />
       </FilterItem>
       <FilterItem label="Who?">
