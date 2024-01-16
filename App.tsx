@@ -92,8 +92,12 @@ export default function App() {
   const [state, dispatch] = React.useReducer(
     (
       prevState: { isLoading: boolean; isSignout: boolean; userToken: string | null },
-      action: { type: "RESTORE_TOKEN" | "SIGN_IN" | "SIGN_OUT"; token?: string | null }
-    ) => {
+      action: { type: "RESTORE_TOKEN" | "SIGN_IN" | "SIGN_OUT"; token: string | null }
+    ): {
+      userToken: string | null;
+      isLoading: boolean;
+      isSignout: boolean;
+    } => {
       if (action.token) {
         SecureStore.setItemAsync("userToken", action.token);
       } else {
@@ -158,19 +162,13 @@ export default function App() {
         if (response.ok) {
           const responseData = await response.json();
           dispatch({ type: "SIGN_IN", token: responseData.jwttoken });
-        } else {
-          dispatch({ type: "SIGN_IN", token: null });
+          return true;
         }
+        dispatch({ type: "SIGN_IN", token: null });
+        return false;
       },
-      signOut: async () => {
-        await fetch(process.env.EXPO_PUBLIC_API_URL + "/auth/logout", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-        dispatch({ type: "SIGN_OUT" });
+      signOut: () => {
+        dispatch({ type: "SIGN_OUT", token: null });
       },
       signUp: async (data: SignUpData) => {
         const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/auth/register", {
@@ -185,9 +183,10 @@ export default function App() {
         if (response.ok) {
           const responseData = await response.json();
           dispatch({ type: "SIGN_IN", token: responseData.jwttoken });
-        } else {
-          dispatch({ type: "SIGN_IN", token: null });
+          return true;
         }
+        dispatch({ type: "SIGN_IN", token: null });
+        return false;
       },
     }),
     []
