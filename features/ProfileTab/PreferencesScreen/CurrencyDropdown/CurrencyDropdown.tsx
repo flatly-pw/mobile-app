@@ -9,7 +9,7 @@ const data: {
   label: string;
   value: Currency;
 }[] = [
-  { label: "Dolar", value: "USD" },
+  { label: "Dollar", value: "USD" },
   { label: "Euro", value: "EUR" },
   { label: "Polish zloty", value: "PLN" },
 ];
