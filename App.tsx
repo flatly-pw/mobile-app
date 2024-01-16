@@ -5,17 +5,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import * as React from "react";
-import { MD3LightTheme, adaptNavigationTheme, PaperProvider } from "react-native-paper";
+import { useState } from "react";
+import { MD3LightTheme, adaptNavigationTheme, PaperProvider, useTheme } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import AuthContext from "./contexts/AuthContext";
+import SettingsContext from "./contexts/SettingsContext";
 import AuthScreen from "./features/AuthScreen/AuthScreen";
 import HelloWorldFeature from "./features/HelloWorldFeature/HelloWorldFeature";
 import HomeTab from "./features/HomeTab/HomeTab";
+import ProfileTab from "./features/ProfileTab/ProfileTab";
 import SignOutTab from "./features/SignOutTab/SignOutTab";
 import SignInData from "./interfaces/SignInData";
 import SignUpData from "./interfaces/SignUpData";
+import UserSettings from "./interfaces/UserSettings";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,65 +27,62 @@ const Tab = createBottomTabNavigator();
  * are in App function and app content was moved to AppContent.
  */
 const AppContent = () => {
+  const theme = useTheme();
+
+  const [settings, setSettings] = useState<UserSettings>();
+
+  const value = { settings, setSettings };
+
+  React.useEffect(() => {
+    // TODO: fetch data from backend
+    setSettings({
+      name: "David",
+      lastName: "Robinson",
+      email: "dawid.robinson@gmail.com",
+      currency: "USD",
+      units: "metric",
+      language: "en-US",
+    });
+  }, []);
+
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{ tabBarActiveTintColor: "#dc1c32", headerShown: false }}>
-      <Tab.Screen
-        name="Home"
-        children={(props) => <HomeTab {...props} />}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Bookings"
-        children={() => (
-          <SafeAreaScreenWrapper>
-            {/* TODO: change this HelloWorldFeature with correct component (components which shows bookings tab) */}
-            <HelloWorldFeature />
-          </SafeAreaScreenWrapper>
-        )}
-        options={{
-          tabBarLabel: "Bookings",
-          tabBarIcon: ({ color, size }) => <AntDesign name="book" size={size} color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        children={() => (
-          <SafeAreaScreenWrapper>
-            {/* TODO: change this HelloWorldFeature with correct component (components which shows profile tab) */}
-            <HelloWorldFeature />
-          </SafeAreaScreenWrapper>
-        )}
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user-circle" size={size} color={color} />
-          ),
-        }}
-      />
-      {/* TODO: REMOVE THIS SCREEN AFETER PROFILE WILL BE IMPLEMENTED! */}
-      {/* IMPORTANT NOTE: this tab screen in temporary (only for development).
-       * In the final application, signOut button will be in profile tab.
-       */}
-      <Tab.Screen
-        name="SignOut"
-        children={() => (
-          <SafeAreaScreenWrapper>
-            <SignOutTab />
-          </SafeAreaScreenWrapper>
-        )}
-        options={{
-          tabBarLabel: "DEV: SignOut",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="logout" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <SettingsContext.Provider value={value}>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={{ tabBarActiveTintColor: theme.colors.primary, headerShown: false }}>
+        <Tab.Screen
+          name="Home"
+          children={(props) => <HomeTab {...props} />}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Bookings"
+          children={() => (
+            <SafeAreaScreenWrapper>
+              {/* TODO: change this HelloWorldFeature with correct component (components which shows bookings tab) */}
+              <HelloWorldFeature />
+            </SafeAreaScreenWrapper>
+          )}
+          options={{
+            tabBarLabel: "Bookings",
+            tabBarIcon: ({ color, size }) => <AntDesign name="book" size={size} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileTab}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome name="user-circle" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </SettingsContext.Provider>
   );
 };
 
