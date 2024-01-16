@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 
 import Accomodation from "./Accomodation/Accomodation";
@@ -9,6 +9,7 @@ import PriceRange from "./PriceRange/PriceRange";
 import Rating from "./Rating/Rating";
 import RoomsAndBeds from "./RoomsAndBeds/RoomsAndBeds";
 import TypeOfPlace from "./TypeOfPlace/TypeOfPlace";
+import FiltersContext from "../../../contexts/FiltersContext";
 
 interface BasicFilterProps {
   route: any;
@@ -97,26 +98,28 @@ const accomodationButtons: ButtonsType = [
 ];
 
 export type AmenitiesType = {
-  [key in "wifi" | "kitchen" | "tv"]: {
-    label: string;
-    checked: boolean;
-  };
+  id: number;
+  label: string;
+  checked: boolean;
 };
 
-const defaultAmenities: AmenitiesType = {
-  wifi: {
+const defaultAmenities: AmenitiesType[] = [
+  {
+    id: 0,
     label: "Wifi",
     checked: false,
   },
-  kitchen: {
+  {
+    id: 1,
     label: "Kitchen",
     checked: false,
   },
-  tv: {
+  {
+    id: 2,
     label: "TV",
     checked: false,
   },
-};
+];
 
 const AdvancedFilter = ({
   route,
@@ -124,14 +127,23 @@ const AdvancedFilter = ({
   bottomTabsRoute,
   bottomTabsNavigation,
 }: BasicFilterProps) => {
-  const [typeOfPlace, setTypeOfPlace] = useState("0");
-  const [sliderValue, setSliderValue] = useState(defaultSliderValue);
-  const [bedrooms, setBedrooms] = useState("0");
-  const [beds, setBeds] = useState("0");
-  const [bathrooms, setBathrooms] = useState("0");
-  const [rating, setRating] = useState("0");
-  const [accomodation, setAccomodation] = useState("0");
-  const [amenities, setAmenities] = useState(defaultAmenities);
+  const { filters } = useContext(FiltersContext);
+
+  const [typeOfPlace, setTypeOfPlace] = useState(filters.typeOfPlace.toString());
+  const [sliderValue, setSliderValue] = useState<SliderValueType>({
+    start: filters.minPrice,
+    end: filters.maxPrice,
+  });
+  const [bedrooms, setBedrooms] = useState(filters.bedrooms.toString());
+  const [beds, setBeds] = useState(filters.beds.toString());
+  const [bathrooms, setBathrooms] = useState(filters.bathrooms.toString());
+  const [rating, setRating] = useState(filters.rating.toString());
+  const [accomodation, setAccomodation] = useState(filters.accomodationType.toString());
+  const [amenities, setAmenities] = useState(
+    defaultAmenities.map((amenity: AmenitiesType) => {
+      return { ...amenity, checked: filters.amenities.includes(amenity.id) };
+    })
+  );
 
   useEffect(() => {
     bottomTabsNavigation.setOptions({ tabBarStyle: { display: "none" } });
@@ -184,7 +196,7 @@ const AdvancedFilter = ({
     setAccomodation(newValue);
   };
 
-  const amenitiesHandler = (newValue: AmenitiesType) => {
+  const amenitiesHandler = (newValue: AmenitiesType[]) => {
     setAmenities(newValue);
   };
 
@@ -215,7 +227,18 @@ const AdvancedFilter = ({
         />
         <Amenities amenities={amenities} amenitiesHandler={amenitiesHandler} />
       </ScrollView>
-      <Footer navigation={navigation} clearHandler={clearHandler} />
+      <Footer
+        navigation={navigation}
+        clearHandler={clearHandler}
+        typeOfPlace={typeOfPlace}
+        sliderValue={sliderValue}
+        bedrooms={bedrooms}
+        beds={beds}
+        bathrooms={bathrooms}
+        rating={rating}
+        accomodation={accomodation}
+        amenities={amenities}
+      />
     </View>
   );
 };
