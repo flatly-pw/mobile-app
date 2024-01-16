@@ -31,7 +31,7 @@ const SignUpScreen = ({ screenHandler }: SignUpScreenProps) => {
   };
 
   const nameErrorText = () => {
-    return "Name should have at least one character";
+    return "Name cannot be empty";
   };
 
   const lastNameHandler = (newLastName: string) => {
@@ -43,7 +43,7 @@ const SignUpScreen = ({ screenHandler }: SignUpScreenProps) => {
   };
 
   const lastNameErrorText = () => {
-    return "Last Name should have at least one character";
+    return "Last Name cannot be empty";
   };
 
   const emailHandler = (newEmail: string) => {
