@@ -1,37 +1,139 @@
-import { useCallback, useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { View, FlatList, RefreshControl } from "react-native";
-import { IconButton, Searchbar, useTheme } from "react-native-paper";
+import { ActivityIndicator, IconButton, Searchbar, Text, useTheme } from "react-native-paper";
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
+import FiltersContext from "../../../contexts/FiltersContext";
 import FlatOffer from "../../../interfaces/FlatOffer";
-
-const defaultFlatOffers: FlatOffer[] = [];
-
-for (let i = 0; i < 10; ++i) {
-  defaultFlatOffers.push({
-    id: i.toString(),
-    name: "Hackney",
-    city: "London",
-    price: Math.floor(Math.random() * (100 - 30 + 1) + 30),
-    rating: Math.random() * 5,
-    distanceFromCenter: Math.floor(Math.random() * (10 - 0 + 1) + 0),
-    imageSource:
-      "https://media.architecturaldigest.com/photos/5845c567caee54856138ed69/4:3/w_2016,h_1512,c_limit/london-hotels-05.jpg",
-  });
-}
 
 const FlatOfferList = ({ route, navigation }) => {
   const theme = useTheme();
 
-  const [flatOffers, setFlatOffers] = useState<FlatOffer[]>(defaultFlatOffers);
+  const { filters } = useContext(FiltersContext);
+
+  const [flatOffers, setFlatOffers] = useState<FlatOffer[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const [page, setPage] = useState(0);
+
+  const createFilterParameters = (fetchPage: number) => {
+    let params = `?page=${fetchPage}&pageSize=10`;
+
+    if (!filters) {
+      params += "&adults=0&children=0&pets=0";
+      return params;
+    }
+
+    const { city, country, startDate, endDate, beds, bedrooms, bathrooms, adults, children, pets } =
+      filters;
+
+    params += city.length > 0 ? `&city=${city}` : "";
+    params += country.length > 0 ? `&country=${country}` : "";
+    params += startDate.length > 0 ? `&startDate=${startDate}` : "";
+    params += endDate.length > 0 ? `&endDate=${endDate}` : "";
+
+    params += `&beds=${beds}`;
+    params += `&bedrooms=${bedrooms}`;
+    params += `&bathrooms=${bathrooms}`;
+    params += `&adults=${adults}`;
+    params += `&children=${children}`;
+    params += `&pets=${pets}`;
+
+    return params;
+  };
+
+  const setFlatOffetsFromFetch = (data: any[]) => {
+    try {
+      const transformedFlatOffets: FlatOffer[] = [];
+      data.map((flatOffer) => {
+        transformedFlatOffets.push({
+          id: flatOffer.id,
+          name: flatOffer.title,
+          city: flatOffer.city,
+          price: flatOffer.pricePerNight,
+          rating: flatOffer.rating,
+          distanceFromCenter: 0, // TODO: not implemented on backend yet
+          imageSource: flatOffer.thumbnail,
+        });
+      });
+      setFlatOffers(transformedFlatOffets);
+    } catch (e) {
+      setIsError(true);
+      console.error(e);
+    }
+  };
+
+  const fetchFlats = async (fetchPage: number) => {
+    setLoading(true);
+    let userToken: string | null;
+    try {
+      userToken = await SecureStore.getItemAsync("userToken");
+    } catch {
+      // Token was not found in the secure store. User is not authenticated.
+      userToken = null;
+    }
+
+    if (!userToken) {
+      setIsError(true);
+      return;
+    }
+
+    const response = await fetch(
+      process.env.EXPO_PUBLIC_API_URL + "/flats" + createFilterParameters(fetchPage),
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + userToken,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      setFlatOffetsFromFetch(data.data);
+      setIsLastPage(data.last);
+    } else {
+      console.error(
+        "Problem with fetch, status text:",
+        response.statusText,
+        ", status code:",
+        response.status
+      );
+      setIsError(true);
+    }
+
+    setLoading(false);
+  };
 
   const onRefresh = useCallback(() => {
+    setPage(0);
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 500);
+    setIsError(false);
+    setIsLastPage(false);
+    fetchFlats(0);
+    setRefreshing(false);
   }, []);
+
+  const fetchNextPage = () => {
+    if (isLastPage) {
+      return;
+    }
+    fetchFlats(page + 1);
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    fetchFlats(page);
+  }, [filters]);
+
+  const ListFooter = () => {
+    if (!(flatOffers.length > 0) && loading) {
+      return <ActivityIndicator animating={loading} size="large" />;
+    }
+  };
 
   return (
     <View
@@ -67,19 +169,47 @@ const FlatOfferList = ({ route, navigation }) => {
           }}
         />
       </View>
-      <FlatList
-        data={flatOffers}
-        renderItem={({ item }) => (
-          <FlatOfferListItem route={route} navigation={navigation} flatOffer={item} />
-        )}
-        keyExtractor={(flatOffer: FlatOffer) => flatOffer.id}
-        contentContainerStyle={{
-          flexGrow: 1,
-          overflow: "visible",
-          minHeight: "100%",
-        }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      />
+      {isError ? (
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 10,
+              minHeight: "100%",
+              color: theme.colors.error,
+            }}
+            variant="headlineSmall">
+            Error while fetching resources.
+          </Text>
+        </RefreshControl>
+      ) : loading ? (
+        <ActivityIndicator animating={loading} size="large" />
+      ) : flatOffers.length > 0 ? (
+        <FlatList
+          data={flatOffers}
+          renderItem={({ item }) => (
+            <FlatOfferListItem route={route} navigation={navigation} flatOffer={item} />
+          )}
+          keyExtractor={(flatOffer: FlatOffer) => flatOffer.id}
+          contentContainerStyle={{
+            flexGrow: 1,
+            overflow: "visible",
+            minHeight: "100%",
+          }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          onEndReached={fetchNextPage}
+          onEndReachedThreshold={0.8}
+          ListFooterComponent={ListFooter}
+        />
+      ) : (
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
+          <Text
+            style={{ textAlign: "center", marginTop: 10, minHeight: "100%" }}
+            variant="headlineSmall">
+            No flats found.
+          </Text>
+        </RefreshControl>
+      )}
     </View>
   );
 };
