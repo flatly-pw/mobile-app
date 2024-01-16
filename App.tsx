@@ -6,7 +6,7 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import * as React from "react";
 import { useState } from "react";
-import { MD3LightTheme, adaptNavigationTheme, PaperProvider } from "react-native-paper";
+import { MD3LightTheme, adaptNavigationTheme, PaperProvider, useTheme } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
@@ -27,6 +27,8 @@ const Tab = createBottomTabNavigator();
  * are in App function and app content was moved to AppContent.
  */
 const AppContent = () => {
+  const theme = useTheme();
+
   const [settings, setSettings] = useState<UserSettings>();
 
   const value = { settings, setSettings };
@@ -47,7 +49,7 @@ const AppContent = () => {
     <SettingsContext.Provider value={value}>
       <Tab.Navigator
         initialRouteName="Home"
-        screenOptions={{ tabBarActiveTintColor: "#dc1c32", headerShown: false }}>
+        screenOptions={{ tabBarActiveTintColor: theme.colors.primary, headerShown: false }}>
         <Tab.Screen
           name="Home"
           children={(props) => <HomeTab {...props} />}
