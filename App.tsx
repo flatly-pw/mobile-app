@@ -81,24 +81,6 @@ const AppContent = () => {
             ),
           }}
         />
-        {/* TODO: REMOVE THIS SCREEN AFETER PROFILE WILL BE IMPLEMENTED! */}
-        {/* IMPORTANT NOTE: this tab screen in temporary (only for development).
-         * In the final application, signOut button will be in profile tab.
-         */}
-        <Tab.Screen
-          name="SignOut"
-          children={() => (
-            <SafeAreaScreenWrapper>
-              <SignOutTab />
-            </SafeAreaScreenWrapper>
-          )}
-          options={{
-            tabBarLabel: "DEV: SignOut",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="logout" size={size} color={color} />
-            ),
-          }}
-        />
       </Tab.Navigator>
     </SettingsContext.Provider>
   );
