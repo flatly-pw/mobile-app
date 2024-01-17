@@ -4,7 +4,7 @@ import CurrencyDropdown from "./CurrencyDropdown/CurrencyDropdown";
 import LanguageDropdown from "./LanguageDropdown/LanguageDropdown";
 import UnitsDropdown from "./UnitsDropdown/UnitsDropdown";
 import SettingsContext from "../../../contexts/SettingsContext";
-import translations from "../../../translations/translations";
+import translations from "../../../preferences/translations";
 import SectionScreen from "../SectionScreen/SectionScreen";
 
 interface PreferencesScreenProps {

@@ -4,7 +4,8 @@ import { View, useWindowDimensions } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import getPriceWithCurrency from "../../../../preferences/currencies";
+import translations from "../../../../preferences/translations";
 import { SliderValueType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -47,12 +48,12 @@ const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
         }}>
         <View style={{ flex: 1, alignItems: "center" }}>
           <Text>{translations.MINIMUM[settings.language]}</Text>
-          <Text>${sliderValue.start}</Text>
+          <Text>{getPriceWithCurrency(sliderValue.start, settings.currency)}</Text>
         </View>
         <View style={{ flex: 1, alignItems: "center" }}>
           <Text>{translations.MAXIMUM[settings.language]}</Text>
           <Text>
-            ${sliderValue.end}
+            {getPriceWithCurrency(sliderValue.end, settings.currency)}
             {sliderValue.end === maxPriceRange ? "+" : ""}
           </Text>
         </View>

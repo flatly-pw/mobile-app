@@ -5,7 +5,9 @@ import { Surface } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import FlatOffer from "../../../../interfaces/FlatOffer";
-import translations from "../../../../translations/translations";
+import getPriceWithCurrency from "../../../../preferences/currencies";
+import getDistanceWithUnit from "../../../../preferences/measurementSystems";
+import translations from "../../../../preferences/translations";
 
 interface FlatOfferListItemProps {
   route: any;
@@ -96,14 +98,21 @@ const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemPr
                 style={{
                   fontSize: 12,
                 }}>
-                {flatOffer.distanceFromCenter.toFixed(0)} km{" "}
-                {translations.FROM_CENTER[settings.language]}
+                {getDistanceWithUnit(
+                  flatOffer.distanceFromCenter,
+                  settings.units,
+                  settings.language
+                ) +
+                  " " +
+                  translations.FROM_CENTER[settings.language]}
               </Text>
               <Text
                 style={{
                   fontSize: 20,
                 }}>
-                ${flatOffer.price.toFixed(0)} {translations.PER_NIGHT[settings.language]}
+                {getPriceWithCurrency(flatOffer.price, settings.currency, 0) +
+                  " " +
+                  translations.PER_NIGHT[settings.language]}
               </Text>
             </View>
           </Animated.View>

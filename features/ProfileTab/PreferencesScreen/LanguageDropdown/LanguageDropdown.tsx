@@ -3,7 +3,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { Surface, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 import Language from "../../../../types/Language";
 
 const data: {

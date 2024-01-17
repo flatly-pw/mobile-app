@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { SegmentedButtons } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 import { ButtonsType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 

@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { View } from "react-native";
 import { useTheme, Button } from "react-native-paper";
 
-import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
 import FiltersContext from "../../../../contexts/FiltersContext";
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../preferences/translations";
 import { CompanionType } from "../BasicFilter";
 
 interface HeaderProp {
@@ -27,7 +27,7 @@ const Footer = ({
   companions,
 }: HeaderProp) => {
   const { settings } = useContext(SettingsContext);
-  
+
   const theme = useTheme();
 
   const { filters, setFilters } = useContext(FiltersContext);
