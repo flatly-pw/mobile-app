@@ -5,6 +5,7 @@ import { Surface } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import FlatOffer from "../../../../interfaces/FlatOffer";
+import getPriceWithCurrency from "../../../../preferences/currencies";
 import translations from "../../../../preferences/translations";
 
 interface FlatOfferListItemProps {
@@ -103,7 +104,9 @@ const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemPr
                 style={{
                   fontSize: 20,
                 }}>
-                ${flatOffer.price.toFixed(0)} {translations.PER_NIGHT[settings.language]}
+                {getPriceWithCurrency(flatOffer.price, settings.currency, 0) +
+                  " " +
+                  translations.PER_NIGHT[settings.language]}
               </Text>
             </View>
           </Animated.View>
