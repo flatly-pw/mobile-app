@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { SegmentedButtons } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { ButtonsType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -10,8 +13,10 @@ interface RatingProps {
 }
 
 const Rating = ({ rating, ratingHandler, ratingButtons }: RatingProps) => {
+  const { settings } = useContext(SettingsContext);
+
   return (
-    <FilterItem title="Rating">
+    <FilterItem title={translations.RATING[settings.language]}>
       <SegmentedButtons
         value={rating}
         onValueChange={(newValue: string) => ratingHandler(newValue)}

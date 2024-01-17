@@ -1,6 +1,9 @@
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { useContext } from "react";
 import { View } from "react-native";
 import { IconButton, useTheme, Text } from "react-native-paper";
+
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 
 interface HeaderProp {
   navigation: any;
@@ -9,6 +12,8 @@ interface HeaderProp {
 }
 
 const Header = ({ navigation, isSearching, isSearchingHandler }: HeaderProp) => {
+  const { settings } = useContext(SettingsContext);
+
   const theme = useTheme();
 
   return (
@@ -49,7 +54,7 @@ const Header = ({ navigation, isSearching, isSearchingHandler }: HeaderProp) => 
           position: "absolute",
           width: "100%",
         }}>
-        Stays
+        {translations.STAYS[settings.language]}
       </Text>
     </View>
   );

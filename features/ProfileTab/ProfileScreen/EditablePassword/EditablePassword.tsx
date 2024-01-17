@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
+
 const EditablePassword = () => {
+  const { settings } = useContext(SettingsContext);
+
   const [isEditable, setIsEditable] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -21,13 +26,13 @@ const EditablePassword = () => {
         {isEditable ? (
           <>
             <TextInput
-              label="Old Password"
+              label={translations.OLD_PASSWORD[settings.language]}
               value={oldPassword}
               onChangeText={(password) => setOldPassword(password)}
               secureTextEntry
             />
             <TextInput
-              label="New Password"
+              label={translations.NEW_PASSWORD[settings.language]}
               value={newPassword}
               onChangeText={(password) => setNewPassword(password)}
               secureTextEntry
@@ -35,7 +40,7 @@ const EditablePassword = () => {
           </>
         ) : (
           <>
-            <Text variant="headlineSmall">Password</Text>
+            <Text variant="headlineSmall">{translations.PASSWORD[settings.language]}</Text>
             <Text variant="titleMedium">••••••••••••••</Text>
           </>
         )}
@@ -47,15 +52,15 @@ const EditablePassword = () => {
             onPress={() => {
               setIsEditable(false);
             }}>
-            Apply
+            {translations.APPLY[settings.language]}
           </Button>
           <Button icon="cancel" onPress={() => setIsEditable(false)}>
-            Cancel
+            {translations.CANCEL[settings.language]}
           </Button>
         </View>
       ) : (
         <Button icon="account-edit-outline" onPress={() => setIsEditable(true)}>
-          Edit
+          {translations.EDIT[settings.language]}
         </Button>
       )}
     </Surface>

@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { SegmentedButtons } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { ButtonsType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -10,8 +13,10 @@ interface TypeOfPlaceProps {
 }
 
 const TypeOfPlace = ({ typeOfPlace, typeOfPlaceHandler, typeOfPlaceButtons }: TypeOfPlaceProps) => {
+  const { settings } = useContext(SettingsContext);
+
   return (
-    <FilterItem title="Type of place">
+    <FilterItem title={translations.TYPE_OF_PLACE[settings.language]}>
       <SegmentedButtons
         value={typeOfPlace}
         onValueChange={(newValue: string) => typeOfPlaceHandler(newValue)}

@@ -1,9 +1,12 @@
 import { ListItem } from "@rneui/themed";
+import { useContext } from "react";
 import { ScrollView, View } from "react-native";
-import { Calendar, DateData } from "react-native-calendars";
+import { DateData, Calendar } from "react-native-calendars";
 import { Icon, Searchbar, useTheme } from "react-native-paper";
 
 import FilterItem from "./FilterItem/FilterItem";
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { CompanionType, DestinationType } from "../BasicFilter";
 import Companion from "../Companion/Companion";
 
@@ -34,6 +37,8 @@ const Filter = ({
   isSearchingHandler,
   destinations,
 }: FilterProps) => {
+  const { settings } = useContext(SettingsContext);
+
   const theme = useTheme();
 
   const calendarOnPressHandler = (day: DateData) => {
@@ -126,10 +131,10 @@ const Filter = ({
 
   return (
     <ScrollView>
-      <FilterItem label="Where to?">
+      <FilterItem label={translations.WHERE_TO[settings.language]}>
         <Searchbar
           value={search}
-          placeholder="Search destinations"
+          placeholder={translations.SEARCH_DESTINATIONS[settings.language]}
           onChangeText={(newSearch) => {
             searchHandler(newSearch);
           }}
@@ -139,7 +144,7 @@ const Filter = ({
           showSoftInputOnFocus={false}
         />
       </FilterItem>
-      <FilterItem label="When?">
+      <FilterItem label={translations.WHEN[settings.language]}>
         <Calendar
           onDayPress={calendarOnPressHandler}
           markingType="period"
@@ -150,22 +155,22 @@ const Filter = ({
           theme={{ arrowColor: theme.colors.primary }}
         />
       </FilterItem>
-      <FilterItem label="Who?">
+      <FilterItem label={translations.WHO[settings.language]}>
         <Companion
-          name="Adults"
-          description="Ages 13 or above"
+          name={translations.ADULTS[settings.language]}
+          description={translations.AGES_13_OR_ABOVE[settings.language]}
           value={companions.adults}
           valueHandler={(newValue) => companionsHandler("adults", newValue)}
         />
         <Companion
-          name="Children"
-          description="Under 13"
+          name={translations.CHILDREN[settings.language]}
+          description={translations.UNDER_13[settings.language]}
           value={companions.children}
           valueHandler={(newValue) => companionsHandler("children", newValue)}
         />
         <Companion
-          name="Pets"
-          description="Some exotic animals may not be allowed"
+          name={translations.PETS[settings.language]}
+          description={translations.SOME_EXOTIC_ANIMALS_MAY_NOT_BE_ALLOWED[settings.language]}
           value={companions.pets}
           valueHandler={(newValue) => companionsHandler("pets", newValue)}
         />

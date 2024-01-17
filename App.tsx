@@ -8,6 +8,7 @@ import * as React from "react";
 import { useState } from "react";
 import { MD3LightTheme, adaptNavigationTheme, PaperProvider, useTheme } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import LocaleConfig from "xdate";
 
 import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import AuthContext from "./contexts/AuthContext";
@@ -19,6 +20,7 @@ import ProfileTab from "./features/ProfileTab/ProfileTab";
 import SignInData from "./interfaces/SignInData";
 import SignUpData from "./interfaces/SignUpData";
 import UserSettings from "./interfaces/UserSettings";
+import translations from "./translations/translations";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,21 +30,65 @@ const Tab = createBottomTabNavigator();
 const AppContent = () => {
   const theme = useTheme();
 
-  const [settings, setSettings] = useState<UserSettings>();
+  const [settings, setSettings] = useState<UserSettings>({
+    name: "David",
+    lastName: "Robinson",
+    email: "david.robinson@gmail.com",
+    currency: "USD",
+    units: "metric",
+    language: "en-US",
+  });
 
   const value = { settings, setSettings };
 
   React.useEffect(() => {
-    // TODO: fetch data from backend
-    setSettings({
-      name: "David",
-      lastName: "Robinson",
-      email: "dawid.robinson@gmail.com",
-      currency: "USD",
-      units: "metric",
-      language: "en-US",
-    });
-  }, []);
+    LocaleConfig.locales[""].dayNames = [
+      translations.SUNDAY[settings.language],
+      translations.MONDAY[settings.language],
+      translations.TUESDAY[settings.language],
+      translations.WEDNESDAY[settings.language],
+      translations.THURSDAY[settings.language],
+      translations.FRIDAY[settings.language],
+      translations.SATURDAY[settings.language],
+    ];
+    LocaleConfig.locales[""].dayNamesShort = [
+      translations.SUN[settings.language],
+      translations.MON[settings.language],
+      translations.TUE[settings.language],
+      translations.WED[settings.language],
+      translations.THU[settings.language],
+      translations.FRI[settings.language],
+      translations.SAT[settings.language],
+    ];
+    LocaleConfig.locales[""].monthNames = [
+      translations.JANUARY[settings.language],
+      translations.FEBRUARY[settings.language],
+      translations.MARCH[settings.language],
+      translations.APRIL[settings.language],
+      translations.MAY[settings.language],
+      translations.JUNE[settings.language],
+      translations.JULY[settings.language],
+      translations.AUGUST[settings.language],
+      translations.SEPTEMBER[settings.language],
+      translations.OCTOBER[settings.language],
+      translations.NOVEMBER[settings.language],
+      translations.DECEMBER[settings.language],
+    ];
+    LocaleConfig.locales[""].monthNamesShort = [
+      translations.JAN[settings.language],
+      translations.FEB[settings.language],
+      translations.MAR[settings.language],
+      translations.APR[settings.language],
+      translations.MAY[settings.language],
+      translations.JUN[settings.language],
+      translations.JUL[settings.language],
+      translations.AUG[settings.language],
+      translations.SEP[settings.language],
+      translations.OCT[settings.language],
+      translations.NOV[settings.language],
+      translations.DEC[settings.language],
+    ];
+  }, [settings.language]);
 
   return (
     <SettingsContext.Provider value={value}>
@@ -53,7 +99,7 @@ const AppContent = () => {
           name="Home"
           children={(props) => <HomeTab {...props} />}
           options={{
-            tabBarLabel: "Home",
+            tabBarLabel: translations.HOME[settings.language],
             tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
           }}
         />
@@ -66,7 +112,7 @@ const AppContent = () => {
             </SafeAreaScreenWrapper>
           )}
           options={{
-            tabBarLabel: "Bookings",
+            tabBarLabel: translations.BOOKINGS[settings.language],
             tabBarIcon: ({ color, size }) => <AntDesign name="book" size={size} color={color} />,
           }}
         />
@@ -74,7 +120,7 @@ const AppContent = () => {
           name="Profile"
           component={ProfileTab}
           options={{
-            tabBarLabel: "Profile",
+            tabBarLabel: translations.PROFILE[settings.language],
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="user-circle" size={size} color={color} />
             ),

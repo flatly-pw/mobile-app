@@ -3,25 +3,26 @@ import { Dropdown } from "react-native-element-dropdown";
 import { Surface, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import Currency from "../../../../types/Currency";
-
-const data: {
-  label: string;
-  value: Currency;
-}[] = [
-  { label: "U.S. Dollar", value: "USD" },
-  { label: "Euro", value: "EUR" },
-  { label: "Polish zloty", value: "PLN" },
-];
 
 const CurrencyDropdown = () => {
   const { settings, setSettings } = useContext(SettingsContext);
 
   const [currency, setCurrency] = useState(settings.currency);
 
+  const data: {
+    label: string;
+    value: Currency;
+  }[] = [
+    { label: translations.US_DOLLAR[settings.language], value: "USD" },
+    { label: translations.EURO[settings.language], value: "EUR" },
+    { label: translations.POLISH_ZLOTY[settings.language], value: "PLN" },
+  ];
+
   return (
     <Surface style={{ padding: 10, margin: 20, borderRadius: 10 }}>
-      <Text>Currency</Text>
+      <Text>{translations.CURRENCY[settings.language]}</Text>
       <Dropdown
         data={data}
         labelField="label"

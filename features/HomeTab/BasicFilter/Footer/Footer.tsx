@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { View } from "react-native";
 import { useTheme, Button } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import FiltersContext from "../../../../contexts/FiltersContext";
 import { CompanionType } from "../BasicFilter";
 
@@ -24,6 +26,8 @@ const Footer = ({
   search,
   companions,
 }: HeaderProp) => {
+  const { settings } = useContext(SettingsContext);
+  
   const theme = useTheme();
 
   const { filters, setFilters } = useContext(FiltersContext);
@@ -65,7 +69,7 @@ const Footer = ({
         style={{ flex: 1, alignItems: "flex-start" }}
         labelStyle={theme.fonts.titleLarge}
         onPress={clearHandler}>
-        Clear all
+        {translations.CLEAR_ALL[settings.language]}
       </Button>
       <Button
         style={{ alignItems: "flex-end" }}
@@ -76,7 +80,7 @@ const Footer = ({
           navigation.navigate("FlatOfferList");
         }}
         icon="magnify">
-        Search
+        {translations.SEARCH[settings.language]}
       </Button>
     </View>
   );

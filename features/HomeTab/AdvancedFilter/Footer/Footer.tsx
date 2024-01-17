@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import FiltersContext from "../../../../contexts/FiltersContext";
 import { AmenitiesType, SliderValueType } from "../AdvancedFilter";
 
@@ -30,6 +32,8 @@ const Footer = ({
   accomodation,
   amenities,
 }: FooterProps) => {
+  const { settings } = useContext(SettingsContext);
+  
   const theme = useTheme();
 
   const { filters, setFilters } = useContext(FiltersContext);
@@ -71,7 +75,7 @@ const Footer = ({
         style={{ flex: 1, alignItems: "flex-start" }}
         labelStyle={theme.fonts.titleLarge}
         onPress={clearHandler}>
-        Clear all
+        {translations.CLEAR_ALL[settings.language]}
       </Button>
       <Button
         style={{ alignItems: "flex-end" }}
@@ -81,7 +85,7 @@ const Footer = ({
           updateFilters();
           navigation.navigate("FlatOfferList");
         }}>
-        Show flats
+        {translations.SHOW_FLATS[settings.language]}
       </Button>
     </View>
   );

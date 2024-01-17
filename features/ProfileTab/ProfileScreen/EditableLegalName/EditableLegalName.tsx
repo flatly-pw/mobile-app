@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 
 const EditableName = () => {
   const { settings, setSettings } = useContext(SettingsContext);
@@ -23,16 +24,20 @@ const EditableName = () => {
       <View style={{ padding: 10, flex: 1 }}>
         {isEditable ? (
           <>
-            <TextInput label="Name" value={name} onChangeText={(newName) => setName(newName)} />
             <TextInput
-              label="Last Name"
+              label={translations.NAME[settings.language]}
+              value={name}
+              onChangeText={(newName) => setName(newName)}
+            />
+            <TextInput
+              label={translations.LAST_NAME[settings.language]}
               value={lastName}
               onChangeText={(newLastName) => setLastName(newLastName)}
             />
           </>
         ) : (
           <>
-            <Text variant="headlineSmall">Legal name</Text>
+            <Text variant="headlineSmall">{translations.LEGAL_NAME[settings.language]}</Text>
             <Text variant="titleMedium">
               {settings.name} {settings.lastName}
             </Text>
@@ -47,15 +52,15 @@ const EditableName = () => {
               setSettings({ ...settings, name, lastName });
               setIsEditable(false);
             }}>
-            Apply
+            {translations.APPLY[settings.language]}
           </Button>
           <Button icon="cancel" onPress={() => setIsEditable(false)}>
-            Cancel
+            {translations.CANCEL[settings.language]}
           </Button>
         </View>
       ) : (
         <Button icon="account-edit-outline" onPress={() => setIsEditable(true)}>
-          Edit
+          {translations.EDIT[settings.language]}
         </Button>
       )}
     </Surface>

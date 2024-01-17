@@ -5,14 +5,18 @@ import { ActivityIndicator, IconButton, Searchbar, Text, useTheme } from "react-
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
 import FiltersContext from "../../../contexts/FiltersContext";
+import SettingsContext from "../../../contexts/SettingsContext";
 import FlatOffer from "../../../interfaces/FlatOffer";
+import translations from "../../../translations/translations";
 
 const FlatOfferList = ({ route, navigation }) => {
   const theme = useTheme();
 
+  const { settings } = useContext(SettingsContext);
   const { filters } = useContext(FiltersContext);
 
   const [flatOffers, setFlatOffers] = useState<FlatOffer[]>([]);
+
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -151,7 +155,7 @@ const FlatOfferList = ({ route, navigation }) => {
         }}>
         <Searchbar
           value=""
-          placeholder="Where to?"
+          placeholder={translations.WHERE_TO[settings.language]}
           onPressIn={() => {
             navigation.navigate("BasicFilter");
           }}
