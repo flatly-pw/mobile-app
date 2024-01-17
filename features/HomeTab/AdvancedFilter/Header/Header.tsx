@@ -1,11 +1,17 @@
+import { useContext } from "react";
 import { View } from "react-native";
 import { IconButton, Text, useTheme } from "react-native-paper";
+
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 
 interface HeaderProps {
   navigation: any;
 }
 
 const Header = ({ navigation }: HeaderProps) => {
+  const { settings } = useContext(SettingsContext);
+
   const theme = useTheme();
 
   return (
@@ -34,7 +40,7 @@ const Header = ({ navigation }: HeaderProps) => {
           position: "absolute",
           width: "100%",
         }}>
-        Filters
+        {translations.FILTERS[settings.language]}
       </Text>
     </View>
   );

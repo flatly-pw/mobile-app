@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 
 import Accomodation from "./Accomodation/Accomodation";
@@ -9,6 +9,8 @@ import PriceRange from "./PriceRange/PriceRange";
 import Rating from "./Rating/Rating";
 import RoomsAndBeds from "./RoomsAndBeds/RoomsAndBeds";
 import TypeOfPlace from "./TypeOfPlace/TypeOfPlace";
+import SettingsContext from "../../../contexts/SettingsContext";
+import translations from "../../../translations/translations";
 
 interface BasicFilterProps {
   route: any;
@@ -23,78 +25,7 @@ export type ButtonsType = {
   style?: StyleProp<ViewStyle>;
 }[];
 
-const typeOfPlaceButtons: ButtonsType = [
-  {
-    value: "0",
-    label: "Any type",
-  },
-  {
-    value: "1",
-    label: "Room",
-  },
-  {
-    value: "2",
-    label: "Entire home",
-  },
-];
-
-const roomsAndBedsButtons: ButtonsType = [
-  { value: "0", label: "Any" },
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5" },
-  { value: "6", label: "6+" },
-];
-
 export type SliderValueType = { start: number; end: number };
-
-const defaultSliderValue: SliderValueType = {
-  start: 40,
-  end: 60,
-};
-
-const ratingButtons: ButtonsType = [
-  {
-    value: "0",
-    label: "Any",
-  },
-  {
-    value: "1",
-    label: "4.5+",
-  },
-  {
-    value: "2",
-    label: "3.5+",
-  },
-  {
-    value: "3",
-    label: "2.5+",
-  },
-];
-
-const accomodationButtons: ButtonsType = [
-  {
-    value: "0",
-    label: "Any type",
-  },
-  {
-    value: "1",
-    label: "Hotel",
-  },
-  {
-    value: "2",
-    label: "Flat",
-  },
-  {
-    value: "3",
-    label: "Guest house",
-    style: {
-      flex: 0,
-    },
-  },
-];
 
 export type AmenitiesType = {
   [key in "wifi" | "kitchen" | "tv"]: {
@@ -103,27 +34,100 @@ export type AmenitiesType = {
   };
 };
 
-const defaultAmenities: AmenitiesType = {
-  wifi: {
-    label: "Wifi",
-    checked: false,
-  },
-  kitchen: {
-    label: "Kitchen",
-    checked: false,
-  },
-  tv: {
-    label: "TV",
-    checked: false,
-  },
-};
-
 const AdvancedFilter = ({
   route,
   navigation,
   bottomTabsRoute,
   bottomTabsNavigation,
 }: BasicFilterProps) => {
+  const { settings } = useContext(SettingsContext);
+
+  const typeOfPlaceButtons: ButtonsType = [
+    {
+      value: "0",
+      label: translations.ANY_TYPE[settings.language],
+    },
+    {
+      value: "1",
+      label: translations.ROOM[settings.language],
+    },
+    {
+      value: "2",
+      label: translations.ENTIRE_HOME[settings.language],
+    },
+  ];
+
+  const roomsAndBedsButtons: ButtonsType = [
+    { value: "0", label: translations.ANY[settings.language] },
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" },
+    { value: "6", label: "6+" },
+  ];
+
+  const defaultSliderValue: SliderValueType = {
+    start: 40,
+    end: 60,
+  };
+
+  const ratingButtons: ButtonsType = [
+    {
+      value: "0",
+      label: translations.ANY[settings.language],
+    },
+    {
+      value: "1",
+      label: "4.5+",
+    },
+    {
+      value: "2",
+      label: "3.5+",
+    },
+    {
+      value: "3",
+      label: "2.5+",
+    },
+  ];
+
+  const accomodationButtons: ButtonsType = [
+    {
+      value: "0",
+      label: translations.ANY_TYPE[settings.language],
+    },
+    {
+      value: "1",
+      label: translations.HOTEL[settings.language],
+    },
+    {
+      value: "2",
+      label: translations.FLAT[settings.language],
+    },
+    {
+      value: "3",
+      label: translations.GUEST_HOUSE[settings.language],
+      style: {
+        flex: 0,
+      },
+    },
+  ];
+
+  const defaultAmenities: AmenitiesType = {
+    wifi: {
+      label: translations.WIFI[settings.language],
+      checked: false,
+    },
+    kitchen: {
+      label: translations.KITCHEN[settings.language],
+      checked: false,
+    },
+    tv: {
+      label: translations.TV[settings.language],
+      checked: false,
+    },
+  };
+
   const [typeOfPlace, setTypeOfPlace] = useState("0");
   const [sliderValue, setSliderValue] = useState(defaultSliderValue);
   const [bedrooms, setBedrooms] = useState("0");

@@ -1,6 +1,10 @@
+import { useContext } from "react";
+
 import EditableEmail from "./EditableEmail/EditableEmail";
 import EditableName from "./EditableLegalName/EditableLegalName";
 import EditablePassword from "./EditablePassword/EditablePassword";
+import SettingsContext from "../../../contexts/SettingsContext";
+import translations from "../../../translations/translations";
 import SectionScreen from "../SectionScreen/SectionScreen";
 
 interface ProfileScreenProps {
@@ -16,13 +20,15 @@ const ProfileScreen = ({
   bottomTabsRoute,
   bottomTabsNavigation,
 }: ProfileScreenProps) => {
+  const { settings } = useContext(SettingsContext);
+
   return (
     <SectionScreen
       route={route}
       navigation={navigation}
       bottomTabsRoute={bottomTabsRoute}
       bottomTabsNavigation={bottomTabsNavigation}
-      label="Manage user">
+      label={translations.MANAGE_USER[settings.language]}>
       <EditableName />
       <EditableEmail />
       <EditablePassword />

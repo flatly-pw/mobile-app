@@ -1,7 +1,10 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { useContext } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { SliderValueType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -14,10 +17,14 @@ const minPriceRange = 20;
 const maxPriceRange = 100;
 
 const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
+  const { settings } = useContext(SettingsContext);
+
   const theme = useTheme();
 
   return (
-    <FilterItem title="Price range" description="per night">
+    <FilterItem
+      title={translations.PRICE_RANGE[settings.language]}
+      description={translations.PER_NIGHT[settings.language]}>
       <MultiSlider
         values={[sliderValue.start, sliderValue.end]}
         onValuesChange={(newValues: number[]) => {
@@ -39,11 +46,11 @@ const PriceRange = ({ sliderValue, sliderValueHandler }: PriceRangeProps) => {
           flexDirection: "row",
         }}>
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Minimum</Text>
+          <Text>{translations.MINIMUM[settings.language]}</Text>
           <Text>${sliderValue.start}</Text>
         </View>
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text>Maximum</Text>
+          <Text>{translations.MAXIMUM[settings.language]}</Text>
           <Text>
             ${sliderValue.end}
             {sliderValue.end === maxPriceRange ? "+" : ""}

@@ -3,6 +3,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { Surface, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import Language from "../../../../types/Language";
 
 const data: {
@@ -20,7 +21,7 @@ const LanguageDropdown = () => {
 
   return (
     <Surface style={{ padding: 10, margin: 20, borderRadius: 10 }}>
-      <Text>Language</Text>
+      <Text>{translations.LANGUAGE[settings.language]}</Text>
       <Dropdown
         data={data}
         labelField="label"

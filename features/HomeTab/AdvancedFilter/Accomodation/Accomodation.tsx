@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { SegmentedButtons } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { ButtonsType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -14,8 +17,10 @@ const Accomodation = ({
   accomodationHandler,
   accomodationButtons,
 }: AcoomodationProps) => {
+  const { settings } = useContext(SettingsContext);
+
   return (
-    <FilterItem title="Accomodation type">
+    <FilterItem title={translations.ACCOMODATION_TYPE[settings.language]}>
       <SegmentedButtons
         value={accomodation}
         onValueChange={(newValue: string) => accomodationHandler(newValue)}

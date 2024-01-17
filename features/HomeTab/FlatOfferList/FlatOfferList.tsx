@@ -1,9 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { View, FlatList, RefreshControl } from "react-native";
 import { IconButton, Searchbar, useTheme } from "react-native-paper";
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
+import SettingsContext from "../../../contexts/SettingsContext";
 import FlatOffer from "../../../interfaces/FlatOffer";
+import translations from "../../../translations/translations";
 
 const defaultFlatOffers: FlatOffer[] = [];
 
@@ -22,6 +24,8 @@ for (let i = 0; i < 10; ++i) {
 
 const FlatOfferList = ({ route, navigation }) => {
   const theme = useTheme();
+
+  const { settings } = useContext(SettingsContext);
 
   const [flatOffers, setFlatOffers] = useState<FlatOffer[]>(defaultFlatOffers);
   const [refreshing, setRefreshing] = useState(false);
@@ -49,7 +53,7 @@ const FlatOfferList = ({ route, navigation }) => {
         }}>
         <Searchbar
           value=""
-          placeholder="Where to?"
+          placeholder={translations.WHERE_TO[settings.language]}
           onPressIn={() => {
             navigation.navigate("BasicFilter");
           }}

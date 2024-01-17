@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 
 const EditableEmail = () => {
   const { settings, setSettings } = useContext(SettingsContext);
@@ -22,7 +23,11 @@ const EditableEmail = () => {
       }}>
       <View style={{ padding: 10, flex: 1 }}>
         {isEditable ? (
-          <TextInput label="Email" value={email} onChangeText={(newEmail) => setEmail(newEmail)} />
+          <TextInput
+            label={translations.EMAIL[settings.language]}
+            value={email}
+            onChangeText={(newEmail) => setEmail(newEmail)}
+          />
         ) : (
           <>
             <Text variant="headlineSmall">Email</Text>
@@ -38,15 +43,15 @@ const EditableEmail = () => {
               setSettings({ ...settings, email });
               setIsEditable(false);
             }}>
-            Apply
+            {translations.APPLY[settings.language]}
           </Button>
           <Button icon="cancel" onPress={() => setIsEditable(false)}>
-            Cancel
+            {translations.CANCEL[settings.language]}
           </Button>
         </View>
       ) : (
         <Button icon="account-edit-outline" onPress={() => setIsEditable(true)}>
-          Edit
+          {translations.EDIT[settings.language]}
         </Button>
       )}
     </Surface>

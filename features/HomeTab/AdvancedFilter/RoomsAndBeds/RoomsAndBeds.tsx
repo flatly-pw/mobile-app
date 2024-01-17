@@ -1,4 +1,8 @@
+import { useContext } from "react";
+
 import RoomsAndBedsItem from "./RoomsAndBedsItem/RoomsAndBedsItem";
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 import { ButtonsType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
@@ -21,22 +25,24 @@ const RoomsAndBeds = ({
   bathroomsHandler,
   roomsAndBedsButtons,
 }: RoomsAndBedsProps) => {
+  const { settings } = useContext(SettingsContext);
+
   return (
-    <FilterItem title="Rooms and beds">
+    <FilterItem title={translations.ROOMS_AND_BEDS[settings.language]}>
       <RoomsAndBedsItem
-        label="Bedrooms"
+        label={translations.BEDROOMS[settings.language]}
         value={bedrooms}
         valueHandler={bedroomsHandler}
         buttons={roomsAndBedsButtons}
       />
       <RoomsAndBedsItem
-        label="Beds"
+        label={translations.BEDS[settings.language]}
         value={beds}
         valueHandler={bedsHandler}
         buttons={roomsAndBedsButtons}
       />
       <RoomsAndBedsItem
-        label="Bathrooms"
+        label={translations.BATHROOMS[settings.language]}
         value={bathrooms}
         valueHandler={bathroomsHandler}
         buttons={roomsAndBedsButtons}

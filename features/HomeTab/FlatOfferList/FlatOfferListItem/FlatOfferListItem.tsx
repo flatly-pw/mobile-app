@@ -1,8 +1,11 @@
 import { Octicons } from "@expo/vector-icons";
+import { useContext } from "react";
 import { Text, View, Image, Pressable, Animated } from "react-native";
 import { Surface } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
 import FlatOffer from "../../../../interfaces/FlatOffer";
+import translations from "../../../../translations/translations";
 
 interface FlatOfferListItemProps {
   route: any;
@@ -11,6 +14,8 @@ interface FlatOfferListItemProps {
 }
 
 const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemProps) => {
+  const { settings } = useContext(SettingsContext);
+
   const animated = new Animated.Value(1);
   const fadeIn = () => {
     Animated.timing(animated, {
@@ -91,13 +96,14 @@ const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemPr
                 style={{
                   fontSize: 12,
                 }}>
-                {flatOffer.distanceFromCenter.toFixed(0)} km from center
+                {flatOffer.distanceFromCenter.toFixed(0)} km{" "}
+                {translations.FROM_CENTER[settings.language]}
               </Text>
               <Text
                 style={{
                   fontSize: 20,
                 }}>
-                ${flatOffer.price.toFixed(0)} night
+                ${flatOffer.price.toFixed(0)} {translations.PER_NIGHT[settings.language]}
               </Text>
             </View>
           </Animated.View>

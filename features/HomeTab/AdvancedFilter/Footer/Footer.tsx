@@ -1,5 +1,9 @@
+import { useContext } from "react";
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
+
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../translations/translations";
 
 interface FooterProps {
   navigation: any;
@@ -7,6 +11,8 @@ interface FooterProps {
 }
 
 const Footer = ({ navigation, clearHandler }: FooterProps) => {
+  const { settings } = useContext(SettingsContext);
+
   const theme = useTheme();
 
   return (
@@ -23,7 +29,7 @@ const Footer = ({ navigation, clearHandler }: FooterProps) => {
         style={{ flex: 1, alignItems: "flex-start" }}
         labelStyle={theme.fonts.titleLarge}
         onPress={clearHandler}>
-        Clear all
+        {translations.CLEAR_ALL[settings.language]}
       </Button>
       <Button
         style={{ alignItems: "flex-end" }}
@@ -32,7 +38,7 @@ const Footer = ({ navigation, clearHandler }: FooterProps) => {
         onPress={() => {
           navigation.navigate("FlatOfferList");
         }}>
-        Show 873 flats
+        {translations.SHOW_FLATS[settings.language]}
       </Button>
     </View>
   );
