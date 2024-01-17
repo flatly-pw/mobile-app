@@ -8,10 +8,10 @@ import { CompanionType, DestinationType } from "../BasicFilter";
 import Companion from "../Companion/Companion";
 
 interface FilterProps {
-  startingDay: DateData | null;
-  startingDayHandler: (newStartingDay: DateData | null) => void;
-  endingDay: DateData | null;
-  endingDayHandler: (newEndingDay: DateData | null) => void;
+  startingDay: string;
+  startingDayHandler: (newStartingDay: string) => void;
+  endingDay: string;
+  endingDayHandler: (newEndingDay: string) => void;
   search: string;
   searchHandler: (newSearch: string) => void;
   companions: { [key in CompanionType]: number };
@@ -37,29 +37,29 @@ const Filter = ({
   const theme = useTheme();
 
   const calendarOnPressHandler = (day: DateData) => {
-    if (startingDay === null) {
-      startingDayHandler(day);
+    if (startingDay === "") {
+      startingDayHandler(day.dateString);
     } else {
-      if (endingDay == null) {
-        if (startingDay.timestamp >= day.timestamp) {
-          startingDayHandler(day);
+      if (endingDay === "") {
+        if (startingDay >= day.dateString) {
+          startingDayHandler(day.dateString);
         } else {
-          endingDayHandler(day);
+          endingDayHandler(day.dateString);
         }
       } else {
-        startingDayHandler(day);
-        endingDayHandler(null);
+        startingDayHandler(day.dateString);
+        endingDayHandler("");
       }
     }
   };
 
   const calendarGenerateMarkedDays = () => {
-    if (startingDay === null) return;
+    if (startingDay === "") return;
 
     const dates = {};
     for (
-      let timestamp = startingDay.timestamp;
-      timestamp <= (endingDay ?? startingDay).timestamp;
+      let timestamp = new Date(startingDay).getTime();
+      timestamp <= new Date(endingDay.length > 0 ? endingDay : startingDay).getTime();
       timestamp += 24 * 60 * 60 * 1000 // one day in miliseconds
     ) {
       const date = new Date(timestamp);
@@ -73,8 +73,8 @@ const Filter = ({
       const dateString = `${year}-${month}-${day}`;
       dates[dateString] = {
         color: theme.colors.primaryContainer,
-        startingDay: dateString === startingDay.dateString,
-        endingDay: dateString === (endingDay ?? startingDay).dateString,
+        startingDay: dateString === startingDay,
+        endingDay: dateString === (endingDay.length > 0 ? endingDay : startingDay),
       };
     }
 

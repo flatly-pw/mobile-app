@@ -1,6 +1,6 @@
 // Why this import is necessary? See: https://reactnavigation.org/docs/stack-navigator/#installation
 import "react-native-gesture-handler";
-import { MaterialIcons, FontAwesome, AntDesign } from "@expo/vector-icons";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
@@ -16,7 +16,6 @@ import AuthScreen from "./features/AuthScreen/AuthScreen";
 import HelloWorldFeature from "./features/HelloWorldFeature/HelloWorldFeature";
 import HomeTab from "./features/HomeTab/HomeTab";
 import ProfileTab from "./features/ProfileTab/ProfileTab";
-import SignOutTab from "./features/SignOutTab/SignOutTab";
 import SignInData from "./interfaces/SignInData";
 import SignUpData from "./interfaces/SignUpData";
 import UserSettings from "./interfaces/UserSettings";
