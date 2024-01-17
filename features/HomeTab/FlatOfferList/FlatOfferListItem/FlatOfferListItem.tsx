@@ -6,6 +6,7 @@ import { Surface } from "react-native-paper";
 import SettingsContext from "../../../../contexts/SettingsContext";
 import FlatOffer from "../../../../interfaces/FlatOffer";
 import getPriceWithCurrency from "../../../../preferences/currencies";
+import getDistanceWithUnit from "../../../../preferences/measurementSystems";
 import translations from "../../../../preferences/translations";
 
 interface FlatOfferListItemProps {
@@ -97,8 +98,13 @@ const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemPr
                 style={{
                   fontSize: 12,
                 }}>
-                {flatOffer.distanceFromCenter.toFixed(0)} km{" "}
-                {translations.FROM_CENTER[settings.language]}
+                {getDistanceWithUnit(
+                  flatOffer.distanceFromCenter,
+                  settings.units,
+                  settings.language
+                ) +
+                  " " +
+                  translations.FROM_CENTER[settings.language]}
               </Text>
               <Text
                 style={{
