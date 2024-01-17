@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
-import { DateData } from "react-native-calendars";
 
 import Filter from "./Filter/Filter";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
+import FiltersContext from "../../../contexts/FiltersContext";
 
 interface BasicFilterProps {
   route: any;
@@ -61,12 +61,20 @@ const BasicFilter = ({
   bottomTabsRoute,
   bottomTabsNavigation,
 }: BasicFilterProps) => {
-  const [startingDay, setStartingDay] = useState<DateData | null>(null);
-  const [endingDay, setEndingDay] = useState<DateData | null>(null);
-  const [search, setSearch] = useState("");
+  const { filters } = useContext(FiltersContext);
+
+  const [startingDay, setStartingDay] = useState<string>(filters.startDate);
+  const [endingDay, setEndingDay] = useState<string>(filters.endDate);
+  const [search, setSearch] = useState(
+    filters.city.length > 0 ? `${filters.city}, ${filters.country}` : filters.country
+  );
   const [isSearching, setIsSearching] = useState(false);
   const [destinations, setDestinations] = useState(defaultDestinations);
-  const [companions, setCompanions] = useState(defaultCompanions);
+  const [companions, setCompanions] = useState({
+    adults: filters.adults,
+    children: filters.children,
+    pets: filters.pets,
+  });
 
   useEffect(() => {
     bottomTabsNavigation.setOptions({ tabBarStyle: { display: "none" } });
@@ -87,11 +95,11 @@ const BasicFilter = ({
     setCompanions(defaultCompanions);
   };
 
-  const startingDayHandler = (newStartingDay: DateData | null) => {
+  const startingDayHandler = (newStartingDay: string) => {
     setStartingDay(newStartingDay);
   };
 
-  const endingDayHandler = (newEndingDay: DateData | null) => {
+  const endingDayHandler = (newEndingDay: string) => {
     setEndingDay(newEndingDay);
   };
 
@@ -127,7 +135,15 @@ const BasicFilter = ({
         isSearchingHandler={isSearchingHandler}
         destinations={destinations}
       />
-      <Footer navigation={navigation} clearHandler={clearHandler} isSearching={isSearching} />
+      <Footer
+        navigation={navigation}
+        clearHandler={clearHandler}
+        isSearching={isSearching}
+        startingDay={startingDay}
+        endingDay={endingDay}
+        search={search}
+        companions={companions}
+      />
     </View>
   );
 };

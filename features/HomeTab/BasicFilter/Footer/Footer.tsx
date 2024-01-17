@@ -4,17 +4,55 @@ import { useTheme, Button } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../translations/translations";
+import FiltersContext from "../../../../contexts/FiltersContext";
+import { CompanionType } from "../BasicFilter";
 
 interface HeaderProp {
   navigation: any;
   clearHandler: () => void;
   isSearching: boolean;
+  startingDay: string;
+  endingDay: string;
+  search: string;
+  companions: { [key in CompanionType]: number };
 }
 
-const Footer = ({ navigation, clearHandler, isSearching }: HeaderProp) => {
+const Footer = ({
+  navigation,
+  clearHandler,
+  isSearching,
+  startingDay,
+  endingDay,
+  search,
+  companions,
+}: HeaderProp) => {
   const { settings } = useContext(SettingsContext);
-
+  
   const theme = useTheme();
+
+  const { filters, setFilters } = useContext(FiltersContext);
+
+  const updateFilters = () => {
+    let city = "";
+    let country = "";
+
+    if (search.split(",").length === 1) {
+      country = search;
+    } else {
+      [city, country] = search.split(",").map((name) => name.trim());
+    }
+
+    setFilters({
+      ...filters,
+      startDate: startingDay,
+      endDate: endingDay,
+      city,
+      country,
+      adults: companions.adults,
+      children: companions.children,
+      pets: companions.pets,
+    });
+  };
 
   return (
     <View
@@ -38,6 +76,7 @@ const Footer = ({ navigation, clearHandler, isSearching }: HeaderProp) => {
         mode="outlined"
         labelStyle={theme.fonts.titleLarge}
         onPress={() => {
+          updateFilters();
           navigation.navigate("FlatOfferList");
         }}
         icon="magnify">

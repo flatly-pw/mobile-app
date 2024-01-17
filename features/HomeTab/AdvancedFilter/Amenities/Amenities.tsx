@@ -7,8 +7,8 @@ import { AmenitiesType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
 interface AmenitiesProps {
-  amenities: AmenitiesType;
-  amenitiesHandler: (newValue: AmenitiesType) => void;
+  amenities: AmenitiesType[];
+  amenitiesHandler: (newValue: AmenitiesType[]) => void;
 }
 
 const Amenities = ({ amenities, amenitiesHandler }: AmenitiesProps) => {
@@ -16,21 +16,22 @@ const Amenities = ({ amenities, amenitiesHandler }: AmenitiesProps) => {
 
   return (
     <FilterItem title={translations.AMENITIES[settings.language]}>
-      {Object.keys(amenities).map((key: string) => {
+      {amenities.map((amenity) => {
         return (
           <AmenitiesItem
-            label={amenities[key].label}
-            status={amenities[key].checked}
-            statusHandler={(newValue: boolean) =>
-              amenitiesHandler({
-                ...amenities,
-                [key]: {
-                  ...amenities[key],
-                  checked: newValue,
-                },
-              })
-            }
-            key={key}
+            label={amenity.label}
+            status={amenity.checked}
+            statusHandler={(newValue: boolean) => {
+              return amenitiesHandler(
+                amenities.map((_amenity) => {
+                  if (amenity.id === _amenity.id) {
+                    return { ..._amenity, checked: newValue };
+                  }
+                  return _amenity;
+                })
+              );
+            }}
+            key={amenity.id}
           />
         );
       })}

@@ -4,16 +4,62 @@ import { Button, useTheme } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../translations/translations";
+import FiltersContext from "../../../../contexts/FiltersContext";
+import { AmenitiesType, SliderValueType } from "../AdvancedFilter";
 
 interface FooterProps {
   navigation: any;
   clearHandler: () => void;
+  typeOfPlace: string;
+  sliderValue: SliderValueType;
+  bedrooms: string;
+  beds: string;
+  bathrooms: string;
+  rating: string;
+  accomodation: string;
+  amenities: AmenitiesType[];
 }
 
-const Footer = ({ navigation, clearHandler }: FooterProps) => {
+const Footer = ({
+  navigation,
+  clearHandler,
+  typeOfPlace,
+  sliderValue,
+  bedrooms,
+  beds,
+  bathrooms,
+  rating,
+  accomodation,
+  amenities,
+}: FooterProps) => {
   const { settings } = useContext(SettingsContext);
-
+  
   const theme = useTheme();
+
+  const { filters, setFilters } = useContext(FiltersContext);
+
+  const updateFilters = () => {
+    const amenitiesIds = [];
+
+    amenities.map((amenity) => {
+      if (amenity.checked) {
+        amenitiesIds.push(amenity.id);
+      }
+    });
+
+    setFilters({
+      ...filters,
+      typeOfPlace: +typeOfPlace,
+      minPrice: sliderValue.start,
+      maxPrice: sliderValue.end,
+      bedrooms: +bedrooms,
+      beds: +beds,
+      bathrooms: +bathrooms,
+      rating: +rating,
+      accomodationType: +accomodation,
+      amenities: amenitiesIds,
+    });
+  };
 
   return (
     <View
@@ -36,6 +82,7 @@ const Footer = ({ navigation, clearHandler }: FooterProps) => {
         mode="outlined"
         labelStyle={theme.fonts.titleLarge}
         onPress={() => {
+          updateFilters();
           navigation.navigate("FlatOfferList");
         }}>
         {translations.SHOW_FLATS[settings.language]}
