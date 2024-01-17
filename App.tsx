@@ -184,6 +184,15 @@ export default function App() {
 
       try {
         userToken = await SecureStore.getItemAsync("userToken");
+        const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/auth/ok", {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Invalid token");
+        }
       } catch {
         // Token was not found in the secure store. User is not authenticated.
         userToken = null;
