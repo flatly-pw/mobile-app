@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { View } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
-import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
 import FiltersContext from "../../../../contexts/FiltersContext";
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../preferences/translations";
 import { AmenitiesType, SliderValueType } from "../AdvancedFilter";
 
 interface FooterProps {
@@ -33,7 +33,7 @@ const Footer = ({
   amenities,
 }: FooterProps) => {
   const { settings } = useContext(SettingsContext);
-  
+
   const theme = useTheme();
 
   const { filters, setFilters } = useContext(FiltersContext);

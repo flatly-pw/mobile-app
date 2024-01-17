@@ -9,10 +9,9 @@ import PriceRange from "./PriceRange/PriceRange";
 import Rating from "./Rating/Rating";
 import RoomsAndBeds from "./RoomsAndBeds/RoomsAndBeds";
 import TypeOfPlace from "./TypeOfPlace/TypeOfPlace";
-import SettingsContext from "../../../contexts/SettingsContext";
-import translations from "../../../translations/translations";
 import FiltersContext from "../../../contexts/FiltersContext";
-
+import SettingsContext from "../../../contexts/SettingsContext";
+import translations from "../../../preferences/translations";
 
 interface BasicFilterProps {
   route: any;
@@ -43,7 +42,7 @@ const AdvancedFilter = ({
 }: BasicFilterProps) => {
   const { settings } = useContext(SettingsContext);
   const { filters } = useContext(FiltersContext);
-        
+
   const typeOfPlaceButtons: ButtonsType = [
     {
       value: "0",

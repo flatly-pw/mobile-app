@@ -7,7 +7,7 @@ import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
 import FiltersContext from "../../../contexts/FiltersContext";
 import SettingsContext from "../../../contexts/SettingsContext";
 import FlatOffer from "../../../interfaces/FlatOffer";
-import translations from "../../../translations/translations";
+import translations from "../../../preferences/translations";
 
 const FlatOfferList = ({ route, navigation }) => {
   const theme = useTheme();

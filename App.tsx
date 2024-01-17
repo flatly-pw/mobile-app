@@ -20,7 +20,7 @@ import ProfileTab from "./features/ProfileTab/ProfileTab";
 import SignInData from "./interfaces/SignInData";
 import SignUpData from "./interfaces/SignUpData";
 import UserSettings from "./interfaces/UserSettings";
-import translations from "./translations/translations";
+import translations from "./preferences/translations";
 
 const Tab = createBottomTabNavigator();
 

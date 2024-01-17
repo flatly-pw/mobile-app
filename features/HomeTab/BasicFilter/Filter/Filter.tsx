@@ -6,7 +6,7 @@ import { Icon, Searchbar, useTheme } from "react-native-paper";
 
 import FilterItem from "./FilterItem/FilterItem";
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 import { CompanionType, DestinationType } from "../BasicFilter";
 import Companion from "../Companion/Companion";
 

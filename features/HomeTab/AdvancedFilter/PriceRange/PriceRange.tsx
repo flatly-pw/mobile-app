@@ -4,7 +4,7 @@ import { View, useWindowDimensions } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 import { SliderValueType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 

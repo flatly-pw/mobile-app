@@ -4,7 +4,7 @@ import EditableEmail from "./EditableEmail/EditableEmail";
 import EditableName from "./EditableLegalName/EditableLegalName";
 import EditablePassword from "./EditablePassword/EditablePassword";
 import SettingsContext from "../../../contexts/SettingsContext";
-import translations from "../../../translations/translations";
+import translations from "../../../preferences/translations";
 import SectionScreen from "../SectionScreen/SectionScreen";
 
 interface ProfileScreenProps {

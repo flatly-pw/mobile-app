@@ -5,7 +5,7 @@ import { Surface } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import FlatOffer from "../../../../interfaces/FlatOffer";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 
 interface FlatOfferListItemProps {
   route: any;

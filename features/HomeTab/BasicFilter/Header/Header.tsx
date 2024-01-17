@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { IconButton, useTheme, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 
 interface HeaderProp {
   navigation: any;

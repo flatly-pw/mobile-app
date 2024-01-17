@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import AmenitiesItem from "./AmenitiesItem/AmenitiesItem";
 import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../translations/translations";
+import translations from "../../../../preferences/translations";
 import { AmenitiesType } from "../AdvancedFilter";
 import FilterItem from "../FilterItem/FilterItem";
 
