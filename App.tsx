@@ -33,10 +33,10 @@ const AppContent = () => {
   const [settings, setSettings] = useState<UserSettings>({
     name: "David",
     lastName: "Robinson",
-    email: "dawid.robinson@gmail.com",
+    email: "david.robinson@gmail.com",
     currency: "USD",
     units: "metric",
-    language: "pl-PL",
+    language: "en-US",
   });
 
   const value = { settings, setSettings };
