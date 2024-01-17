@@ -4,8 +4,8 @@ import { View, FlatList, RefreshControl } from "react-native";
 import { ActivityIndicator, IconButton, Searchbar, Text, useTheme } from "react-native-paper";
 
 import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
-import SettingsContext from "../../../contexts/SettingsContext";
 import FiltersContext from "../../../contexts/FiltersContext";
+import SettingsContext from "../../../contexts/SettingsContext";
 import FlatOffer from "../../../interfaces/FlatOffer";
 import translations from "../../../translations/translations";
 
@@ -15,7 +15,7 @@ const FlatOfferList = ({ route, navigation }) => {
   const { settings } = useContext(SettingsContext);
   const { filters } = useContext(FiltersContext);
 
-  const [flatOffers, setFlatOffers] = useState<FlatOffer[]>(defaultFlatOffers);
+  const [flatOffers, setFlatOffers] = useState<FlatOffer[]>([]);
 
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
