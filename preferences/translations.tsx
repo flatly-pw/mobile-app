@@ -1,4 +1,21 @@
 type TranslationsKeys =
+  | "OWNER"
+  | "ACTIVE_SINCE"
+  | "PHONE"
+  | "BATHROOMS_LOWERCASE"
+  | "BEDROOMS_LOWERCASE"
+  | "PEOPLE"
+  | "REVIEWS"
+  | "NIGHT"
+  | "BOOK_NOW"
+  | "DESCRIPTION"
+  | "FACILITIES"
+  | "LOCATION"
+  | "CHAIR"
+  | "BREAKFAST_INCLUDED"
+  | "PRIVATE_BATHROOM"
+  | "GALLERY"
+  | "RATINGS"
   | "DEC"
   | "NOV"
   | "OCT"
@@ -112,6 +129,74 @@ type Translations = {
 };
 
 const translations: Translations = {
+  OWNER: {
+    "en-US": "Owner",
+    "pl-PL": "Właściciel",
+  },
+  ACTIVE_SINCE: {
+    "en-US": "active since",
+    "pl-PL": "aktywny od",
+  },
+  PHONE: {
+    "en-US": "phone",
+    "pl-PL": "telefon",
+  },
+  BATHROOMS_LOWERCASE: {
+    "en-US": "bathrooms",
+    "pl-PL": "łazienki",
+  },
+  BEDROOMS_LOWERCASE: {
+    "en-US": "bedrooms",
+    "pl-PL": "sypialnie",
+  },
+  PEOPLE: {
+    "en-US": "people",
+    "pl-PL": "osoby",
+  },
+  REVIEWS: {
+    "en-US": "Reviews",
+    "pl-PL": "Opinie",
+  },
+  NIGHT: {
+    "en-US": "night",
+    "pl-PL": "noc",
+  },
+  BOOK_NOW: {
+    "en-US": "Book now",
+    "pl-PL": "Zarezerwuj",
+  },
+  DESCRIPTION: {
+    "en-US": "Description",
+    "pl-PL": "Opis",
+  },
+  FACILITIES: {
+    "en-US": "Facilities",
+    "pl-PL": "Udogodnienia",
+  },
+  LOCATION: {
+    "en-US": "Location",
+    "pl-PL": "Lokalizacja",
+  },
+  CHAIR: {
+    "en-US": "chair",
+    "pl-PL": "krzesło",
+  },
+  BREAKFAST_INCLUDED: {
+    "en-US": "breakfast included",
+    "pl-PL": "śniadanie wliczone w cenę",
+  },
+  PRIVATE_BATHROOM: {
+    "en-US": "private bathroom",
+    "pl-PL": "prywatna łazienka",
+  },
+  GALLERY: {
+    "en-US": "Gallery",
+    "pl-PL": "Galeria zdjęć",
+  },
+  RATINGS: {
+    "en-US": "ratings",
+    "pl-PL": "ocen(y)",
+  },
   CURRENCY: {
     "en-US": "Currency",
     "pl-PL": "Waluta",
