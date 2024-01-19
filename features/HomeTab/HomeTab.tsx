@@ -4,6 +4,7 @@ import { Text } from "react-native";
 
 import AdvancedFilter from "./AdvancedFilter/AdvancedFilter";
 import BasicFilter from "./BasicFilter/BasicFilter";
+import FlatOffer from "./FlatOffer/FlatOffer";
 import FlatOfferList from "./FlatOfferList/FlatOfferList";
 import SafeAreaScreenWrapper from "../../components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import FiltersContext from "../../contexts/FiltersContext";
@@ -57,10 +58,12 @@ const HomeTab = ({ route, navigation }: HomeTabProps) => {
           name="FlatOffer"
           children={(props) => (
             <SafeAreaScreenWrapper>
-              {/* TODO: change this dummy text with our flat offer component,
-               * remember to get flatOffer from props in the new component!
-               */}
-              <Text>Flat Offer...</Text>
+              <FlatOffer
+                {...props}
+                bottomTabsRoute={route}
+                bottomTabsNavigation={navigation}
+                filters={filters}
+              />
             </SafeAreaScreenWrapper>
           )}
         />
