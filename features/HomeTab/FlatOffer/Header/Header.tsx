@@ -23,7 +23,7 @@ const Header = ({ navigation, name }: HeaderProp) => {
         borderBottomColor: theme.colors.backdrop,
       }}>
       <IconButton
-        icon="arrow-left-drop-circle-outline"
+        icon="arrow-left-thin-circle-outline"
         iconColor={theme.colors.primary}
         size={32}
         onPress={() => {

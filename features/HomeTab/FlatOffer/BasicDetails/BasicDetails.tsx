@@ -14,7 +14,7 @@ const BasicDetails = () => {
         <IconButton icon="home" iconColor={theme.colors.primary} size={40} style={{ zIndex: 1 }} />
       </View>
       <View style={styles.itemContainer}>
-        <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>35m2</Text>
+        <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>35m²</Text>
       </View>
       <View style={styles.itemContainer}>
         <IconButton

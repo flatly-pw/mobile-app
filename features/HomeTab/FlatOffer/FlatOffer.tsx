@@ -1,15 +1,15 @@
 import { Octicons } from "@expo/vector-icons";
 // import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { View } from "react-native";
 // import { DateData } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text } from "react-native-paper";
 
 import Accordion from "./Accordion/Accordion";
+import Amenities from "./Amenities/Amenities";
 import BasicDetails from "./BasicDetails/BasicDetails";
 import Description from "./Description/Description";
-import Facilities from "./Facilities/Facilities";
 import Footer from "./Footer/Footer";
 import Gallery from "./Gallery/Gallery";
 import Header from "./Header/Header";
@@ -24,6 +24,17 @@ export type CompanionType = "adults" | "children" | "pets";
 const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, filters }) => {
   const { flatOffer } = route.params;
   const { settings } = useContext(SettingsContext);
+  useEffect(() => {
+    bottomTabsNavigation.setOptions({ tabBarStyle: { display: "none" } });
+
+    // https://stackoverflow.com/a/64789273
+    const unsubscribe = navigation.addListener("beforeRemove", (e: any) => {
+      e.preventDefault();
+      unsubscribe();
+      bottomTabsNavigation.setOptions({ tabBarStyle: { display: "flex" } });
+      navigation.navigate("FlatOfferList");
+    });
+  }, [bottomTabsNavigation, navigation]);
 
   const isEndDate = filters.endDate !== "";
   const startDate = isEndDate ? new Date(filters.startDate) : new Date();
@@ -46,21 +57,23 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
             style={{
               flexDirection: "row",
               alignItems: "center",
-              marginBottom: 20,
             }}>
-            <Octicons name="star-fill" size={24} color="black" />
-            <Text
-              style={{
-                padding: 5,
-              }}>
-              {flatOffer.rating.toFixed(2)} ({Math.floor(Math.random() * 20 + 5)}{" "}
-              {translations.RATINGS[settings.language]})
-            </Text>
+            <Text style={{ fontSize: 20 }}>{translations.GALLERY[settings.language]}</Text>
+            <View style={{ flexDirection: "row", marginLeft: 130 }}>
+              <Octicons name="star-fill" size={24} color="black" />
+              <Text
+                style={{
+                  padding: 5,
+                }}>
+                {flatOffer.rating.toFixed(2)} ({Math.floor(Math.random() * 20 + 5)}{" "}
+                {translations.RATINGS[settings.language]})
+              </Text>
+            </View>
           </View>
           <Gallery imageSource={flatOffer.imageSource} />
           <BasicDetails />
           <Description />
-          <Accordion title={translations.FACILITIES[settings.language]} contents={<Facilities />} />
+          <Accordion title={translations.FACILITIES[settings.language]} contents={<Amenities />} />
           <Map />
           <Accordion title={translations.REVIEWS[settings.language]} contents={<Reviews />} />
           <Owner />

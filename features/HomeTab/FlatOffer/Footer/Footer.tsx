@@ -25,8 +25,9 @@ const Footer = ({ navigation, price }: HeaderProp) => {
         marginTop: 10,
         padding: 10,
       }}>
-      <Button style={{ flex: 1, alignItems: "flex-start" }} labelStyle={theme.fonts.titleLarge}>
-        {getPriceWithCurrency(price, settings.currency, 0)}/{translations.NIGHT[settings.language]}
+      <Button style={{ flex: 1, alignItems: "flex-start" }} labelStyle={theme.fonts.titleMedium}>
+        {getPriceWithCurrency(price, settings.currency, 0)}{" "}
+        {translations.PER_NIGHT[settings.language]}
       </Button>
       <Button
         style={{ alignItems: "flex-end" }}

@@ -3,17 +3,23 @@ import { View, StyleSheet } from "react-native";
 import { IconButton, useTheme, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
+import Amenity from "../../../../interfaces/Amenity";
 import translations from "../../../../preferences/translations";
 
-const Facilities = () => {
+const Amenities = () => {
   const { settings } = useContext(SettingsContext);
   const theme = useTheme();
   const items = ["CHAIR", "TV", "WIFI", "BREAKFAST_INCLUDED", "PRIVATE_BATHROOM"];
+  const amenitiesArray: Amenity[] = items.map((item, index) => ({
+    id: index + 1,
+    label: item,
+    checked: true,
+  }));
 
   return (
     <View style={styles.container}>
-      {items.map((item, index) => (
-        <View style={styles.listItem} key={index}>
+      {amenitiesArray.map((item) => (
+        <View style={styles.listItem} key={item.id}>
           <View style={styles.itemContainer}>
             <IconButton
               icon="check"
@@ -24,7 +30,7 @@ const Facilities = () => {
           </View>
           <View style={styles.itemContainer}>
             <Text style={{ paddingTop: 14, fontSize: 14, marginLeft: -100 }}>
-              {translations[item][settings.language]}
+              {translations[item.label][settings.language]}
             </Text>
           </View>
         </View>
@@ -48,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Facilities;
+export default Amenities;

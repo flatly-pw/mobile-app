@@ -1,25 +1,26 @@
-import { useContext } from "react";
 import { Image, View } from "react-native";
-import { Text } from "react-native-paper";
-
-import SettingsContext from "../../../../contexts/SettingsContext";
-import translations from "../../../../preferences/translations";
+import ImageSlider from "../ImageSlider/ImageSlider";
 
 const Gallery = ({ imageSource }) => {
-  const { settings } = useContext(SettingsContext);
+  const images = Array.isArray(imageSource) ? imageSource : [imageSource];
+
   return (
     <View>
-      <Text style={{ fontSize: 20 }}>{translations.GALLERY[settings.language]}</Text>
-      <Image
-        style={{
-          height: 300,
-          borderRadius: 10,
-          marginBottom: 10,
-        }}
-        source={{
-          uri: imageSource,
-        }}
-      />
+      {/* Use ImageSlider for multiple images or a single Image for a single image */}
+      {images.length > 1 ? (
+        <ImageSlider images={images} />
+      ) : (
+        <Image
+          style={{
+            height: 300,
+            borderRadius: 10,
+            marginBottom: 10,
+          }}
+          source={{
+            uri: images[0],
+          }}
+        />
+      )}
     </View>
   );
 };
