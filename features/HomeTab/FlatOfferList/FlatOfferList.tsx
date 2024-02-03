@@ -27,7 +27,6 @@ const FlatOfferList = ({ route, navigation }) => {
     let params = `?page=${fetchPage}&pageSize=10`;
 
     if (!filters) {
-      params += "&adults=0&children=0&pets=0";
       return params;
     }
 
@@ -39,12 +38,12 @@ const FlatOfferList = ({ route, navigation }) => {
     params += startDate.length > 0 ? `&startDate=${startDate}` : "";
     params += endDate.length > 0 ? `&endDate=${endDate}` : "";
 
-    params += `&beds=${beds}`;
-    params += `&bedrooms=${bedrooms}`;
-    params += `&bathrooms=${bathrooms}`;
-    params += `&adults=${adults}`;
-    params += `&children=${children}`;
-    params += `&pets=${pets}`;
+    params += beds > 0 ? `&beds=${beds}` : "";
+    params += bedrooms > 0 ? `&bedrooms=${bedrooms}` : "";
+    params += bathrooms > 0 ? `&bathrooms=${bathrooms}` : "";
+    params += adults > 0 ? `&adults=${adults}` : "";
+    params += children > 0 ? `&children=${children}` : "";
+    params += pets > 0 ? `&pets=${pets}` : "";
 
     return params;
   };
