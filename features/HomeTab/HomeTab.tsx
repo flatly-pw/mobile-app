@@ -6,9 +6,11 @@ import AdvancedFilter from "./AdvancedFilter/AdvancedFilter";
 import BasicFilter from "./BasicFilter/BasicFilter";
 import FlatOffer from "./FlatOffer/FlatOffer";
 import FlatOfferList from "./FlatOfferList/FlatOfferList";
+import ReservationPanel from "./ReservationPanel/ReservationPanel";
 import SafeAreaScreenWrapper from "../../components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import FiltersContext from "../../contexts/FiltersContext";
 import Filters from "../../interfaces/Filters";
+import PaymentPanel from "./PaymentPanel/PaymentPanel";
 
 interface HomeTabProps {
   route: any;
@@ -64,6 +66,22 @@ const HomeTab = ({ route, navigation }: HomeTabProps) => {
                 bottomTabsNavigation={navigation}
                 filters={filters}
               />
+            </SafeAreaScreenWrapper>
+          )}
+        />
+        <Stack.Screen
+          name="ReservationPanel"
+          children={(props) => (
+            <SafeAreaScreenWrapper>
+              <ReservationPanel {...props} filters={filters} />
+            </SafeAreaScreenWrapper>
+          )}
+        />
+        <Stack.Screen
+          name="PaymentPanel"
+          children={(props) => (
+            <SafeAreaScreenWrapper>
+              <PaymentPanel {...props} />
             </SafeAreaScreenWrapper>
           )}
         />
