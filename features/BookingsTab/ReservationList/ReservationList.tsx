@@ -12,6 +12,7 @@ type ReservationStatus = "active" | "passed" | "cancelled";
 
 const ReservationList = ({ route, navigation }) => {
   const { settings } = useContext(SettingsContext);
+  const shouldRefresh = !!(route.params && route.params.shouldRefresh);
   const theme = useTheme();
 
   const [status, setStatus] = useState<ReservationStatus>("active");
@@ -64,7 +65,9 @@ const ReservationList = ({ route, navigation }) => {
         "Problem with fetch, status text:",
         response.statusText,
         ", status code:",
-        response.status
+        response.status,
+        ", token:",
+        userToken
       );
       setIsError(true);
     }
@@ -80,6 +83,10 @@ const ReservationList = ({ route, navigation }) => {
     fetchReservations(0);
     setRefreshing(false);
   }, []);
+
+  useEffect(() => {
+    onRefresh();
+  }, [shouldRefresh]);
 
   const fetchNextPage = () => {
     if (isLastPage) {
