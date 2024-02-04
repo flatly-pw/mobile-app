@@ -21,7 +21,7 @@ const BookingsTab = ({ route, navigation }) => {
         name="ReservationDetails"
         children={(props) => (
           <SafeAreaScreenWrapper>
-            <ReservationDetails />
+            <ReservationDetails {...props} />
           </SafeAreaScreenWrapper>
         )}
       />
