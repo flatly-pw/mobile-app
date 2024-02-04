@@ -1,4 +1,5 @@
 import { Image, View } from "react-native";
+
 import ImageSlider from "../ImageSlider/ImageSlider";
 
 const Gallery = ({ imageSource }) => {

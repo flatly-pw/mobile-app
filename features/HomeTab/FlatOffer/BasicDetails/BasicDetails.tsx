@@ -5,7 +5,7 @@ import { IconButton, useTheme, Text } from "react-native-paper";
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../preferences/translations";
 
-const BasicDetails = () => {
+const BasicDetails = ({ data }) => {
   const { settings } = useContext(SettingsContext);
   const theme = useTheme();
   return (
@@ -14,7 +14,7 @@ const BasicDetails = () => {
         <IconButton icon="home" iconColor={theme.colors.primary} size={40} style={{ zIndex: 1 }} />
       </View>
       <View style={styles.itemContainer}>
-        <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>35m²</Text>
+        <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>{data.area}m²</Text>
       </View>
       <View style={styles.itemContainer}>
         <IconButton
@@ -26,7 +26,7 @@ const BasicDetails = () => {
       </View>
       <View style={styles.itemContainer}>
         <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>
-          max. 4 {translations.PEOPLE[settings.language]}
+          max. {data.capacity} {translations.PEOPLE[settings.language]}
         </Text>
       </View>
       <View style={styles.itemContainer}>
@@ -39,7 +39,7 @@ const BasicDetails = () => {
       </View>
       <View style={styles.itemContainer}>
         <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>
-          2 {translations.BATHROOMS_LOWERCASE[settings.language]}
+          {data.bathrooms} {translations.BATHROOMS_LOWERCASE[settings.language]}
         </Text>
       </View>
       <View style={styles.itemContainer}>
@@ -52,7 +52,7 @@ const BasicDetails = () => {
       </View>
       <View style={styles.itemContainer}>
         <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -20 }}>
-          2 {translations.BEDROOMS_LOWERCASE[settings.language]}
+          {data.bedrooms} {translations.BEDROOMS_LOWERCASE[settings.language]}
         </Text>
       </View>
     </View>
