@@ -34,7 +34,7 @@ const Footer = ({ navigation, price }: HeaderProp) => {
         mode="outlined"
         labelStyle={theme.fonts.titleLarge}
         onPress={() => {
-          navigation.navigate("FlatOfferList");
+          navigation.navigate("ReservationPanel");
         }}
         icon="magnify">
         {translations.BOOK_NOW[settings.language]}

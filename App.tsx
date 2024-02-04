@@ -14,6 +14,7 @@ import SafeAreaScreenWrapper from "./components/SafeAreaScreenWrapper/SafeAreaSc
 import AuthContext from "./contexts/AuthContext";
 import SettingsContext from "./contexts/SettingsContext";
 import AuthScreen from "./features/AuthScreen/AuthScreen";
+import BookingsTab from "./features/BookingsTab/BookingsTab";
 import HelloWorldFeature from "./features/HelloWorldFeature/HelloWorldFeature";
 import HomeTab from "./features/HomeTab/HomeTab";
 import ProfileTab from "./features/ProfileTab/ProfileTab";
@@ -105,12 +106,7 @@ const AppContent = () => {
         />
         <Tab.Screen
           name="Bookings"
-          children={() => (
-            <SafeAreaScreenWrapper>
-              {/* TODO: change this HelloWorldFeature with correct component (components which shows bookings tab) */}
-              <HelloWorldFeature />
-            </SafeAreaScreenWrapper>
-          )}
+          component={BookingsTab}
           options={{
             tabBarLabel: translations.BOOKINGS[settings.language],
             tabBarIcon: ({ color, size }) => <AntDesign name="book" size={size} color={color} />,
