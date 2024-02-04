@@ -1,18 +1,31 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { View } from "react-native";
 
-import Header from "./Header/Header";
-import MainScreen from "../ProfileTab/MainScreen/MainScreen";
-import PreferencesScreen from "../ProfileTab/PreferencesScreen/PreferencesScreen";
-import ProfileScreen from "../ProfileTab/ProfileScreen/ProfileScreen";
+import ReservationDetails from "./ReservationDetails/ReservationDetails";
+import ReservationList from "./ReservationList/ReservationList";
+import SafeAreaScreenWrapper from "../../components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 
 const BookingsTab = ({ route, navigation }) => {
   const Stack = createStackNavigator();
 
   return (
-    <View style={{ height: "100%", marginTop: 10 }}>
-      <Header navigation={navigation} />
-    </View>
+    <Stack.Navigator initialRouteName="ReservationList" screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="ReservationList"
+        children={(props) => (
+          <SafeAreaScreenWrapper>
+            <ReservationList {...props} />
+          </SafeAreaScreenWrapper>
+        )}
+      />
+      <Stack.Screen
+        name="ReservationDetails"
+        children={(props) => (
+          <SafeAreaScreenWrapper>
+            <ReservationDetails />
+          </SafeAreaScreenWrapper>
+        )}
+      />
+    </Stack.Navigator>
   );
 };
 
