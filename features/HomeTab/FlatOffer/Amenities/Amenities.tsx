@@ -1,15 +1,11 @@
-import { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { IconButton, useTheme, Text } from "react-native-paper";
 
-import SettingsContext from "../../../../contexts/SettingsContext";
 import Amenity from "../../../../interfaces/Amenity";
-import translations from "../../../../preferences/translations";
 
-const Amenities = () => {
-  const { settings } = useContext(SettingsContext);
+const Amenities = ({ data }) => {
   const theme = useTheme();
-  const items = ["CHAIR", "TV", "WIFI", "BREAKFAST_INCLUDED", "PRIVATE_BATHROOM"];
+  const items = data.facilities;
   const amenitiesArray: Amenity[] = items.map((item, index) => ({
     id: index + 1,
     label: item,
@@ -29,9 +25,7 @@ const Amenities = () => {
             />
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{ paddingTop: 14, fontSize: 14, marginLeft: -100 }}>
-              {translations[item.label][settings.language]}
-            </Text>
+            <Text style={{ paddingTop: 14, fontSize: 14, marginLeft: -100 }}>{item.label}</Text>
           </View>
         </View>
       ))}

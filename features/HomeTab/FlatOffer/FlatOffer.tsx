@@ -1,8 +1,7 @@
 import { Octicons } from "@expo/vector-icons";
-// import { useEffect, useState } from "react";
-import { useContext, useEffect } from "react";
+import * as SecureStore from "expo-secure-store";
+import { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
-// import { DateData } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
 import { Text } from "react-native-paper";
 
@@ -17,6 +16,8 @@ import Map from "./Map/Map";
 import Owner from "./Owner/owner";
 import Reviews from "./Reviews/Reviews";
 import SettingsContext from "../../../contexts/SettingsContext";
+import FlatOfferData from "../../../interfaces/FlatOfferData";
+import Review from "../../../interfaces/Review";
 import translations from "../../../preferences/translations";
 
 export type CompanionType = "adults" | "children" | "pets";
@@ -42,42 +43,151 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
   if (!isEndDate) endDate.setDate(endDate.getDate() + 1);
   const timeDifference = endDate.getTime() - startDate.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Will be used to calculate the total price
+  const adultsCount = filters.adults === 0 ? 1 : filters.adults;
+
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [flatOfferData, setFlatOfferData] = useState<FlatOfferData>();
+
+  const setDataFromFetch = (data: any) => {
+    try {
+      const fetchedArea = data.area;
+      const fetchedCapacity = data.capacity;
+      const fetchedBathrooms = data.bathrooms;
+      const fetchedBedrooms = data.bedrooms;
+      const fetchedStreet = data.address.street;
+      const fetchedPostalCode = data.address.postalCode;
+      const fetchedCity = data.address.city;
+      const fetchedCountry = data.address.country;
+      const fetchedLatitude = data.address.latitude;
+      const fetchedLongitude = data.address.longitude;
+      const fetchedDescription = data.description;
+      const fetchedFacilities = data.facilities;
+      const fetchedTopReviews = data.topReviews as Review[];
+      const fetchedGallery = data.gallery;
+      const fetchedOwnerName = data.owner.name;
+      const fetchedOwnerLastName = data.owner.lastName;
+      const fetchedOwnerEmail = data.owner.email;
+      const fetchedOwnerPhoneNumber = data.owner.phoneNumber;
+      const fetchedOwnerRegisteredSince = data.owner.registeredSince;
+      const fetchedNumberOfReviews = data.numberOfReviews;
+      setFlatOfferData({
+        area: fetchedArea,
+        capacity: fetchedCapacity,
+        bathrooms: fetchedBathrooms,
+        bedrooms: fetchedBedrooms,
+        street: fetchedStreet,
+        postalCode: fetchedPostalCode,
+        city: fetchedCity,
+        country: fetchedCountry,
+        latitude: fetchedLatitude,
+        longitude: fetchedLongitude,
+        description: fetchedDescription,
+        facilities: fetchedFacilities,
+        reviews: fetchedTopReviews,
+        gallery: fetchedGallery,
+        ownerName: fetchedOwnerName,
+        ownerLastName: fetchedOwnerLastName,
+        ownerEmail: fetchedOwnerEmail,
+        ownerPhoneNumber: fetchedOwnerPhoneNumber,
+        ownerRegisteredSince: fetchedOwnerRegisteredSince,
+        numberOfReviews: fetchedNumberOfReviews,
+      });
+    } catch (e) {
+      setIsError(true);
+      console.error(e);
+    }
+  };
+
+  const fetchFlat = async () => {
+    setLoading(true);
+    let userToken: string | null;
+    try {
+      userToken = await SecureStore.getItemAsync("userToken");
+    } catch {
+      // Token was not found in the secure store. User is not authenticated.
+      userToken = null;
+    }
+
+    if (!userToken) {
+      setIsError(true);
+      return;
+    }
+
+    const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/flats/" + flatOffer.id, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setDataFromFetch(data);
+    } else {
+      console.error(
+        "Problem with fetch, status text:",
+        response.statusText,
+        ", status code:",
+        response.status
+      );
+      setIsError(true);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    // This useEffect will run when the component mounts
+    fetchFlat(); // Call fetchFlat here to initiate the data fetch
+  }, []); // The empty dependency array ensures that this useEffect runs only once (on mount)
 
   return (
     <View style={{ height: "100%" }}>
       <Header navigation={navigation} name={flatOffer.name} />
       <ScrollView>
-        <View
-          style={{
-            width: "95%",
-            padding: 5,
-            paddingLeft: 20,
-          }}>
+        {flatOfferData ? ( // Check if flatOfferData is defined
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              width: "95%",
+              padding: 5,
+              paddingLeft: 20,
             }}>
-            <Text style={{ fontSize: 20 }}>{translations.GALLERY[settings.language]}</Text>
-            <View style={{ flexDirection: "row", marginLeft: 130 }}>
-              <Octicons name="star-fill" size={24} color="black" />
-              <Text
-                style={{
-                  padding: 5,
-                }}>
-                {flatOffer.rating.toFixed(2)} ({Math.floor(Math.random() * 20 + 5)}{" "}
-                {translations.RATINGS[settings.language]})
-              </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+              <Text style={{ fontSize: 20 }}>{translations.GALLERY[settings.language]}</Text>
+              <View style={{ flexDirection: "row", marginLeft: 130 }}>
+                <Octicons name="star-fill" size={24} color="black" />
+                <Text
+                  style={{
+                    padding: 5,
+                  }}>
+                  {flatOffer.rating.toFixed(2)} ({flatOfferData.numberOfReviews}{" "}
+                  {translations.RATINGS[settings.language]})
+                </Text>
+              </View>
             </View>
+            <Gallery imageSource={flatOfferData.gallery} />
+            <BasicDetails data={flatOfferData} />
+            <Description data={flatOfferData} />
+            <Accordion
+              title={translations.FACILITIES[settings.language]}
+              contents={<Amenities data={flatOfferData} />}
+            />
+            <Map data={flatOfferData} />
+            <Accordion
+              title={translations.REVIEWS[settings.language]}
+              contents={<Reviews data={flatOfferData} />}
+            />
+            <Owner data={flatOfferData} />
           </View>
-          <Gallery imageSource={flatOffer.imageSource} />
-          <BasicDetails />
-          <Description />
-          <Accordion title={translations.FACILITIES[settings.language]} contents={<Amenities />} />
-          <Map />
-          <Accordion title={translations.REVIEWS[settings.language]} contents={<Reviews />} />
-          <Owner />
-        </View>
+        ) : (
+          // Render a loading state or handle the absence of data as needed
+          <Text>Loading...</Text>
+        )}
       </ScrollView>
       <Footer navigation={navigation} price={flatOffer.price} />
     </View>

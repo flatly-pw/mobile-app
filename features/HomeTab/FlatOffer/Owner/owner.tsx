@@ -5,7 +5,7 @@ import { Avatar, Text } from "react-native-paper";
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../preferences/translations";
 
-const Owner = () => {
+const Owner = ({ data }) => {
   const { settings } = useContext(SettingsContext);
   return (
     <View>
@@ -21,12 +21,12 @@ const Owner = () => {
         <View style={{ alignItems: "center", flex: 1 }}>
           <View>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              Jan Kowalski {"\n"}({translations.ACTIVE_SINCE[settings.language]}{" "}
-              {translations.JAN[settings.language]} 2020)
+              {data.ownerName} {data.ownerLastName} {"\n"}(
+              {translations.ACTIVE_SINCE[settings.language]} {data.ownerRegisteredSince})
             </Text>
-            <Text style={{ fontSize: 14 }}>e-mail: jan.kowalski@mail.com</Text>
+            <Text style={{ fontSize: 14 }}>e-mail: {data.ownerEmail}</Text>
             <Text style={{ fontSize: 14 }}>
-              {translations.PHONE[settings.language]}: +48 123 456 789
+              {translations.PHONE[settings.language]}: {data.ownerPhoneNumber}
             </Text>
           </View>
         </View>
