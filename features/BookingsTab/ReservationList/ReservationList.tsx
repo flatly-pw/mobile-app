@@ -1,21 +1,22 @@
 import * as SecureStore from "expo-secure-store";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { View, FlatList, RefreshControl } from "react-native";
-import { ActivityIndicator, IconButton, Searchbar, Text, useTheme } from "react-native-paper";
+import { FlatList, RefreshControl, View } from "react-native";
+import { ActivityIndicator, SegmentedButtons, Text, useTheme } from "react-native-paper";
 
-import FlatOfferListItem from "./FlatOfferListItem/FlatOfferListItem";
-import FiltersContext from "../../../contexts/FiltersContext";
+import ReservationListItem from "./ReservationListItem/ReservationListItem";
 import SettingsContext from "../../../contexts/SettingsContext";
-import FlatOffer from "../../../interfaces/FlatOffer";
+import Reservation from "../../../interfaces/Reservation";
 import translations from "../../../preferences/translations";
 
-const FlatOfferList = ({ route, navigation }) => {
+type ReservationStatus = "active" | "passed" | "cancelled";
+
+const ReservationList = ({ route, navigation }) => {
+  const { settings } = useContext(SettingsContext);
   const theme = useTheme();
 
-  const { settings } = useContext(SettingsContext);
-  const { filters } = useContext(FiltersContext);
+  const [status, setStatus] = useState<ReservationStatus>("active");
 
-  const [flatOffers, setFlatOffers] = useState<FlatOffer[]>([]);
+  const [reservations, setReservation] = useState<Reservation[]>([]);
 
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,51 +26,11 @@ const FlatOfferList = ({ route, navigation }) => {
 
   const createFilterParameters = (fetchPage: number) => {
     let params = `?page=${fetchPage}&pageSize=10`;
-
-    if (!filters) {
-      return params;
-    }
-
-    const { city, country, startDate, endDate, beds, bedrooms, bathrooms, adults, children, pets } =
-      filters;
-
-    params += city.length > 0 ? `&city=${city}` : "";
-    params += country.length > 0 ? `&country=${country}` : "";
-    params += startDate.length > 0 ? `&startDate=${startDate}` : "";
-    params += endDate.length > 0 ? `&endDate=${endDate}` : "";
-
-    params += beds > 0 ? `&beds=${beds}` : "";
-    params += bedrooms > 0 ? `&bedrooms=${bedrooms}` : "";
-    params += bathrooms > 0 ? `&bathrooms=${bathrooms}` : "";
-    params += adults > 0 ? `&adults=${adults}` : "";
-    params += children > 0 ? `&children=${children}` : "";
-    params += pets > 0 ? `&pets=${pets}` : "";
-
+    params += `&filter=${status}`;
     return params;
   };
 
-  const setFlatOffetsFromFetch = (data: any[]) => {
-    try {
-      const transformedFlatOffets: FlatOffer[] = [];
-      data.map((flatOffer) => {
-        transformedFlatOffets.push({
-          id: flatOffer.id,
-          name: flatOffer.title,
-          city: flatOffer.city,
-          price: flatOffer.pricePerNight,
-          rating: flatOffer.rating,
-          distanceFromCenter: 0, // TODO: not implemented on backend yet
-          imageSource: flatOffer.thumbnail,
-        });
-      });
-      setFlatOffers(transformedFlatOffets);
-    } catch (e) {
-      setIsError(true);
-      console.error(e);
-    }
-  };
-
-  const fetchFlats = async (fetchPage: number) => {
+  const fetchReservations = async (fetchPage: number) => {
     setLoading(true);
     let userToken: string | null;
     try {
@@ -85,7 +46,7 @@ const FlatOfferList = ({ route, navigation }) => {
     }
 
     const response = await fetch(
-      process.env.EXPO_PUBLIC_API_URL + "/flats" + createFilterParameters(fetchPage),
+      process.env.EXPO_PUBLIC_API_URL + "/reservations" + createFilterParameters(fetchPage),
       {
         method: "GET",
         headers: {
@@ -96,7 +57,7 @@ const FlatOfferList = ({ route, navigation }) => {
 
     if (response.ok) {
       const data = await response.json();
-      setFlatOffetsFromFetch(data.data);
+      setReservation(data.data as Reservation[]);
       setIsLastPage(data.last);
     } else {
       console.log(
@@ -116,7 +77,7 @@ const FlatOfferList = ({ route, navigation }) => {
     setRefreshing(true);
     setIsError(false);
     setIsLastPage(false);
-    fetchFlats(0);
+    fetchReservations(0);
     setRefreshing(false);
   }, []);
 
@@ -124,25 +85,22 @@ const FlatOfferList = ({ route, navigation }) => {
     if (isLastPage) {
       return;
     }
-    fetchFlats(page + 1);
+    fetchReservations(page + 1);
     setPage(page + 1);
   };
 
   useEffect(() => {
-    fetchFlats(page);
-  }, [filters]);
+    fetchReservations(page);
+  }, [status]);
 
   const ListFooter = () => {
-    if (!(flatOffers.length > 0) && loading) {
+    if (!(reservations.length > 0) && loading) {
       return <ActivityIndicator animating={loading} size="large" />;
     }
   };
 
   return (
-    <View
-      style={{
-        height: "100%",
-      }}>
+    <View style={{ height: "100%" }}>
       <View
         style={{
           flexDirection: "row",
@@ -152,24 +110,23 @@ const FlatOfferList = ({ route, navigation }) => {
           paddingBottom: 10,
           alignItems: "center",
         }}>
-        <Searchbar
-          value=""
-          placeholder={translations.WHERE_TO[settings.language]}
-          onPressIn={() => {
-            navigation.navigate("BasicFilter");
-          }}
-          style={{
-            flex: 10,
-          }}
-          showSoftInputOnFocus={false}
-        />
-        <IconButton
-          icon="filter-variant"
-          iconColor={theme.colors.primary}
-          size={32}
-          onPress={() => {
-            navigation.navigate("AdvancedFilter");
-          }}
+        <SegmentedButtons
+          value={status}
+          onValueChange={(newStatus: ReservationStatus) => setStatus(newStatus)}
+          buttons={[
+            {
+              value: "active",
+              label: translations.ACTIVE[settings.language],
+            },
+            {
+              value: "passed",
+              label: translations.PASSED[settings.language],
+            },
+            {
+              value: "cancelled",
+              label: translations.CANCELLED[settings.language],
+            },
+          ]}
         />
       </View>
       {isError ? (
@@ -187,13 +144,13 @@ const FlatOfferList = ({ route, navigation }) => {
         </RefreshControl>
       ) : loading ? (
         <ActivityIndicator animating={loading} size="large" />
-      ) : flatOffers.length > 0 ? (
+      ) : reservations.length > 0 ? (
         <FlatList
-          data={flatOffers}
+          data={reservations}
           renderItem={({ item }) => (
-            <FlatOfferListItem route={route} navigation={navigation} flatOffer={item} />
+            <ReservationListItem route={route} navigation={navigation} reservation={item} />
           )}
-          keyExtractor={(flatOffer: FlatOffer) => flatOffer.id}
+          keyExtractor={(reservation: Reservation) => reservation.reservationId.toString()}
           contentContainerStyle={{
             flexGrow: 1,
             overflow: "visible",
@@ -209,7 +166,7 @@ const FlatOfferList = ({ route, navigation }) => {
           <Text
             style={{ textAlign: "center", marginTop: 10, minHeight: "100%" }}
             variant="headlineSmall">
-            No flats found.
+            {translations.NO_RESERVATIONS_FOUND[settings.language]}
           </Text>
         </RefreshControl>
       )}
@@ -217,4 +174,4 @@ const FlatOfferList = ({ route, navigation }) => {
   );
 };
 
-export default FlatOfferList;
+export default ReservationList;
