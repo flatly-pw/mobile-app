@@ -67,7 +67,7 @@ const ReservationListItem = ({ route, navigation, reservation }: ReservationList
           <Animated.View style={{ opacity: animated, flexDirection: "row" }}>
             <View
               style={{
-                flex: 1,
+                width: "50%",
                 height: 150,
                 alignItems: "center",
                 justifyContent: "center",
