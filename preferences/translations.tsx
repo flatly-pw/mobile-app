@@ -1,4 +1,7 @@
 type TranslationsKeys =
+  | "ACTIVE"
+  | "PASSED"
+  | "CANCELLED"
   | "OWNER"
   | "ACTIVE_SINCE"
   | "PHONE"
@@ -66,6 +69,7 @@ type TranslationsKeys =
   | "LEGAL_NAME"
   | "STAYS"
   | "NO_FLATS_FOUND"
+  | "NO_RESERVATIONS_FOUND"
   | "ERROR_WHILE_FETCHING_RESOURCES"
   | "SHOW_FLATS"
   | "TV"
@@ -332,6 +336,10 @@ const translations: Translations = {
   NO_FLATS_FOUND: {
     "en-US": "No flats found.",
     "pl-PL": "Nie znaleziono ofert.",
+  },
+  NO_RESERVATIONS_FOUND: {
+    "en-US": "No reservations with current status.",
+    "pl-PL": "Brak rezerwacji o obecnym statusie.",
   },
   PER_NIGHT: {
     "en-US": "per night",
@@ -604,6 +612,18 @@ const translations: Translations = {
   DEC: {
     "en-US": "Dec",
     "pl-PL": "Gru",
+  },
+  ACTIVE: {
+    "en-US": "Active",
+    "pl-PL": "Aktywne",
+  },
+  PASSED: {
+    "en-US": "Passed",
+    "pl-PL": "Po terminie",
+  },
+  CANCELLED: {
+    "en-US": "Cancelled",
+    "pl-PL": "Anulowane",
   },
 };
 
