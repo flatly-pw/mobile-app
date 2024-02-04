@@ -99,7 +99,7 @@ const FlatOfferList = ({ route, navigation }) => {
       setFlatOffetsFromFetch(data.data);
       setIsLastPage(data.last);
     } else {
-      console.error(
+      console.log(
         "Problem with fetch, status text:",
         response.statusText,
         ", status code:",
