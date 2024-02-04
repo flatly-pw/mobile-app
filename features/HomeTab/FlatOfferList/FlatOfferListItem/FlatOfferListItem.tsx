@@ -1,6 +1,7 @@
 import { Octicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { useContext } from "react";
-import { Text, View, Image, Pressable, Animated } from "react-native";
+import { Text, View, Pressable, Animated } from "react-native";
 import { Surface } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
@@ -52,15 +53,24 @@ const FlatOfferListItem = ({ route, navigation, flatOffer }: FlatOfferListItemPr
             padding: 5,
           }}>
           <Animated.View style={{ opacity: animated }}>
-            <Image
+            <View
               style={{
                 height: 300,
-                borderRadius: 10,
-              }}
-              source={{
-                uri: flatOffer.imageSource,
-              }}
-            />
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Image
+                style={{
+                  flex: 1,
+                  width: "100%",
+                  borderRadius: 10,
+                }}
+                source={{ uri: flatOffer.imageSource }}
+                placeholder="LEHLk~WB2yk8pyo0adR*.7kCMdnj"
+                contentFit="cover"
+                transition={1000}
+              />
+            </View>
 
             <View
               style={{
