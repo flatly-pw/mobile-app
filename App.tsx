@@ -32,13 +32,57 @@ const AppContent = () => {
   const theme = useTheme();
 
   const [settings, setSettings] = useState<UserSettings>({
-    name: "David",
-    lastName: "Robinson",
-    email: "david.robinson@gmail.com",
+    name: "",
+    lastName: "",
+    email: "",
     currency: "USD",
     units: "metric",
     language: "en-US",
   });
+
+  const fetchSettings = async () => {
+    let userToken: string | null;
+    try {
+      userToken = await SecureStore.getItemAsync("userToken");
+    } catch {
+      // Token was not found in the secure store. User is not authenticated.
+      userToken = null;
+    }
+
+    if (!userToken) {
+      return;
+    }
+
+    const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/user/data", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setSettings({ ...settings, name: data.name, lastName: data.lastName, email: data.email });
+    } else {
+      console.log(
+        "Problem with fetch in AppContent, status text:",
+        response.statusText,
+        ", status code:",
+        response.status
+      );
+      // For some reason backend throws 401 UNAUTHRORIZED randomly, to prevent this
+      // just refetch after error
+      if (response.status === 401) {
+        setTimeout(() => {
+          fetchSettings();
+        }, 1000);
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    fetchSettings();
+  }, []);
 
   const value = { settings, setSettings };
 
