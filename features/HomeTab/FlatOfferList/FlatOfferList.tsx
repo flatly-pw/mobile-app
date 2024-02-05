@@ -98,14 +98,21 @@ const FlatOfferList = ({ route, navigation }) => {
       const data = await response.json();
       setFlatOffetsFromFetch(data.data);
       setIsLastPage(data.last);
+      setIsError(false);
     } else {
       console.log(
-        "Problem with fetch, status text:",
+        "Problem with fetch in fetchFlats, status text:",
         response.statusText,
         ", status code:",
         response.status
       );
-      setIsError(true);
+      // For some reason backend throws 401 UNAUTHRORIZED randomly, to prevent this
+      // just refetch after error
+      if (response.status === 401) {
+        fetchFlats(fetchPage);
+      } else {
+        setIsError(true);
+      }
     }
 
     setLoading(false);

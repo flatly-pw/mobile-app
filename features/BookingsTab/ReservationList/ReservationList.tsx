@@ -60,6 +60,7 @@ const ReservationList = ({ route, navigation }) => {
       const data = await response.json();
       setReservation(data.data as Reservation[]);
       setIsLastPage(data.last);
+      setIsError(false);
     } else {
       console.log(
         "Problem with fetch, status text:",
@@ -69,7 +70,13 @@ const ReservationList = ({ route, navigation }) => {
         ", token:",
         userToken
       );
-      setIsError(true);
+      // For some reason backend throws 401 UNAUTHRORIZED randomly, to prevent this
+      // just refetch after error
+      if (response.status === 401) {
+        fetchReservations(fetchPage);
+      } else {
+        setIsError(true);
+      }
     }
 
     setLoading(false);
