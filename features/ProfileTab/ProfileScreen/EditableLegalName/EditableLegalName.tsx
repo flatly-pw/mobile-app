@@ -1,6 +1,7 @@
+import * as SecureStore from "expo-secure-store";
 import { useContext, useState } from "react";
 import { View } from "react-native";
-import { Button, Surface, Text, TextInput } from "react-native-paper";
+import { ActivityIndicator, Button, Surface, Text, TextInput } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../preferences/translations";
@@ -11,6 +12,59 @@ const EditableName = () => {
   const [isEditable, setIsEditable] = useState(false);
   const [name, setName] = useState(settings.name);
   const [lastName, setLastName] = useState(settings.lastName);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const editLegalName = async () => {
+    setIsLoading(true);
+    let userToken: string | null;
+    try {
+      userToken = await SecureStore.getItemAsync("userToken");
+    } catch {
+      // Token was not found in the secure store. User is not authenticated.
+      userToken = null;
+    }
+
+    if (!userToken) {
+      return;
+    }
+
+    const responseName = await fetch(process.env.EXPO_PUBLIC_API_URL + "/user/name", {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + userToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newName: name }),
+    });
+
+    const responseLastName = await fetch(process.env.EXPO_PUBLIC_API_URL + "/user/lastName", {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + userToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newLastName: lastName }),
+    });
+
+    if (responseName.ok && responseLastName.ok) {
+      setSettings({ ...settings, name, lastName });
+      setIsEditable(false);
+    } else {
+      console.log(
+        "Problem with fetch in editLegalName, status texts:",
+        responseName.statusText,
+        responseLastName.statusText,
+        ", status codes:",
+        responseName.status,
+        responseLastName.status
+      );
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <Surface
@@ -44,13 +98,14 @@ const EditableName = () => {
           </>
         )}
       </View>
-      {isEditable ? (
+      {isLoading ? (
+        <ActivityIndicator animating={isLoading} size="large" style={{ padding: 10 }} />
+      ) : isEditable ? (
         <View>
           <Button
             icon="lead-pencil"
             onPress={() => {
-              setSettings({ ...settings, name, lastName });
-              setIsEditable(false);
+              editLegalName();
             }}>
             {translations.APPLY[settings.language]}
           </Button>
