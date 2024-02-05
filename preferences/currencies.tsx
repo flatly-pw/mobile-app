@@ -8,7 +8,7 @@ type Currencies = {
 };
 
 // TODO: fetch USDtoCurrency from backend (currently endpoint not implemented)
-const currencies: Currencies = {
+export const currencies: Currencies = {
   USD: {
     sign: "$",
     USDtoCurrency: 1,

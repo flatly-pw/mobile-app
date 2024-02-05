@@ -21,6 +21,7 @@ import ProfileTab from "./features/ProfileTab/ProfileTab";
 import SignInData from "./interfaces/SignInData";
 import SignUpData from "./interfaces/SignUpData";
 import UserSettings from "./interfaces/UserSettings";
+import { currencies } from "./preferences/currencies";
 import translations from "./preferences/translations";
 
 const Tab = createBottomTabNavigator();
@@ -30,6 +31,47 @@ const Tab = createBottomTabNavigator();
  */
 const AppContent = () => {
   const theme = useTheme();
+
+  const fetchExchangeRates = async () => {
+    let userToken: string | null;
+    try {
+      userToken = await SecureStore.getItemAsync("userToken");
+    } catch {
+      // Token was not found in the secure store. User is not authenticated.
+      userToken = null;
+    }
+
+    if (!userToken) {
+      return;
+    }
+
+    const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/currency/exchangeRates", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + userToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      currencies.EUR.USDtoCurrency = data.eur;
+      currencies.PLN.USDtoCurrency = data.pln;
+    } else {
+      console.log(
+        "Problem with fetch in fetchExchangeRates, status text:",
+        response.statusText,
+        ", status code:",
+        response.status
+      );
+      // For some reason backend throws 401 UNAUTHRORIZED randomly, to prevent this
+      // just refetch after error
+      if (response.status === 401) {
+        setTimeout(() => {
+          fetchExchangeRates();
+        }, 1000);
+      }
+    }
+  };
 
   const [settings, setSettings] = useState<UserSettings>({
     name: "",
@@ -81,6 +123,7 @@ const AppContent = () => {
   };
 
   React.useEffect(() => {
+    fetchExchangeRates();
     fetchSettings();
   }, []);
 
