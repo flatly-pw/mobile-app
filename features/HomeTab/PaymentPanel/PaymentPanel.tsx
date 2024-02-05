@@ -140,6 +140,7 @@ const PaymentPanel = ({ route, navigation }) => {
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + userToken,
               },
               body: JSON.stringify(reservationPostData),
             });
