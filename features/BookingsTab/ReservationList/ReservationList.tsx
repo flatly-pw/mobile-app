@@ -73,7 +73,9 @@ const ReservationList = ({ route, navigation }) => {
       // For some reason backend throws 401 UNAUTHRORIZED randomly, to prevent this
       // just refetch after error
       if (response.status === 401) {
-        fetchReservations(fetchPage);
+        setTimeout(() => {
+          fetchReservations(fetchPage);
+        }, 1000);
       } else {
         setIsError(true);
       }
