@@ -65,8 +65,8 @@ const PaymentPanel = ({ route, navigation }) => {
   useEffect(() => {
     setReservationPostData({
       flatId: data.flatId,
-      startDate: data.startDate.toISOString().split("T")[0],
-      endDate: data.endDate.toISOString().split("T")[0],
+      startDate: data.startDate,
+      endDate: data.endDate,
       adults: data.adults,
       children: data.children,
       pets: data.pets,
