@@ -19,6 +19,8 @@ const ReservationPanel = ({ route, navigation, filters }) => {
   const [request, setRequest] = useState("");
   const [displayErrors, setDisplayErrors] = useState(false);
 
+  const { data } = route.params;
+
   const isNumeric = (input) => {
     // Use a regular expression to check if the input contains only digits
     const numericRegex = /^[0-9]+$/;
@@ -39,6 +41,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
 
   const requestHandler = (newRequest) => {
     setRequest(newRequest);
+    data.specialRequests = newRequest;
   };
 
   const requestErrorVisible = () => {
@@ -137,7 +140,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
     <View style={{ height: "100%", marginTop: 10 }}>
       <Header navigation={navigation} />
       <ScrollView>
-        <BookingDetails />
+        <BookingDetails data={data} />
         <Text
           style={{
             textAlign: "center",
@@ -243,7 +246,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
               postCodeValid &&
               countryValid
             ) {
-              navigation.navigate("PaymentPanel");
+              navigation.navigate("PaymentPanel", { data });
             } else {
               setDisplayErrors(true);
             }

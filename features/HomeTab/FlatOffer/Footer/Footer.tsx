@@ -9,9 +9,10 @@ import translations from "../../../../preferences/translations";
 interface HeaderProp {
   navigation: any;
   price: any;
+  data: any;
 }
 
-const Footer = ({ navigation, price }: HeaderProp) => {
+const Footer = ({ navigation, price, data }: HeaderProp) => {
   const theme = useTheme();
   const { settings } = useContext(SettingsContext);
 
@@ -34,7 +35,7 @@ const Footer = ({ navigation, price }: HeaderProp) => {
         mode="outlined"
         labelStyle={theme.fonts.titleLarge}
         onPress={() => {
-          navigation.navigate("ReservationPanel");
+          navigation.navigate("ReservationPanel", { data });
         }}
         icon="magnify">
         {translations.BOOK_NOW[settings.language]}

@@ -4,8 +4,9 @@ import { IconButton, useTheme, Text } from "react-native-paper";
 
 import SettingsContext from "../../../../contexts/SettingsContext";
 import translations from "../../../../preferences/translations";
+import getPriceWithCurrency from "../../../../preferences/currencies";
 
-const BookingDetails = () => {
+const BookingDetails = ({ data }) => {
   const { settings } = useContext(SettingsContext);
   const theme = useTheme();
   return (
@@ -28,8 +29,10 @@ const BookingDetails = () => {
           />
         </View>
         <View style={styles.itemContainer}>
-          <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -100 }}>
-            ul. Koszykowa 75, 00-662 Warszawa
+          <Text style={{ paddingTop: 17, fontSize: 14, marginLeft: -100 }}>
+            {data.street}
+            {"\n"}
+            {data.postalCode} {data.city}, {data.country}
           </Text>
         </View>
         <View style={styles.itemContainer}>
@@ -41,7 +44,10 @@ const BookingDetails = () => {
           />
         </View>
         <View style={styles.itemContainer}>
-          <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -100 }}>dates</Text>
+          <Text style={{ paddingTop: 17, fontSize: 14, marginLeft: -100 }}>
+            {data.startDate.toISOString().split("T")[0]} -{" "}
+            {data.endDate.toISOString().split("T")[0]} {"\n"}({data.nightsCount} nights)
+          </Text>
         </View>
         <View style={styles.itemContainer}>
           <IconButton
@@ -53,7 +59,7 @@ const BookingDetails = () => {
         </View>
         <View style={styles.itemContainer}>
           <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -100 }}>
-            2 adults, 0 children
+            {data.adults} adults, {data.children} children, {data.pets} pets
           </Text>
         </View>
         <View style={styles.itemContainer}>
@@ -65,7 +71,9 @@ const BookingDetails = () => {
           />
         </View>
         <View style={styles.itemContainer}>
-          <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -100 }}>200 USD</Text>
+          <Text style={{ paddingTop: 24, fontSize: 14, marginLeft: -100 }}>
+            {getPriceWithCurrency(data.price * data.nightsCount, settings.currency, 2)}{" "}
+          </Text>
         </View>
       </View>
     </View>

@@ -17,6 +17,7 @@ import Owner from "./Owner/owner";
 import Reviews from "./Reviews/Reviews";
 import SettingsContext from "../../../contexts/SettingsContext";
 import FlatOfferData from "../../../interfaces/FlatOfferData";
+import ReservationData from "../../../interfaces/ReservationData";
 import Review from "../../../interfaces/Review";
 import translations from "../../../preferences/translations";
 
@@ -43,11 +44,11 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
   if (!isEndDate) endDate.setDate(endDate.getDate() + 1);
   const timeDifference = endDate.getTime() - startDate.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Will be used to calculate the total price
-  const adultsCount = filters.adults === 0 ? 1 : filters.adults;
 
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [flatOfferData, setFlatOfferData] = useState<FlatOfferData>();
+  const [reservationData, setReservationData] = useState<ReservationData>();
 
   const setDataFromFetch = (data: any) => {
     try {
@@ -92,6 +93,21 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
         ownerPhoneNumber: fetchedOwnerPhoneNumber,
         ownerRegisteredSince: fetchedOwnerRegisteredSince,
         numberOfReviews: fetchedNumberOfReviews,
+      });
+      setReservationData({
+        street: fetchedStreet,
+        postalCode: fetchedPostalCode,
+        city: fetchedCity,
+        country: fetchedCountry,
+        startDate: startDate,
+        endDate: endDate,
+        nightsCount: daysDifference,
+        adults: filters.adults === 0 ? 1 : filters.adults,
+        children: filters.children,
+        pets: filters.pets,
+        price: flatOffer.price,
+        flatId: flatOffer.id,
+        specialRequests: "",
       });
     } catch (e) {
       setIsError(true);
@@ -138,15 +154,14 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
   };
 
   useEffect(() => {
-    // This useEffect will run when the component mounts
-    fetchFlat(); // Call fetchFlat here to initiate the data fetch
-  }, []); // The empty dependency array ensures that this useEffect runs only once (on mount)
+    fetchFlat();
+  }, []);
 
   return (
     <View style={{ height: "100%" }}>
       <Header navigation={navigation} name={flatOffer.name} />
       <ScrollView>
-        {flatOfferData ? ( // Check if flatOfferData is defined
+        {flatOfferData && reservationData ? ( // Check if flatOfferData is defined
           <View
             style={{
               width: "95%",
@@ -170,6 +185,7 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
                 </Text>
               </View>
             </View>
+            <Text>{reservationData.flatId}1</Text>
             <Gallery imageSource={flatOfferData.gallery} />
             <BasicDetails data={flatOfferData} />
             <Description data={flatOfferData} />
@@ -185,11 +201,13 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
             <Owner data={flatOfferData} />
           </View>
         ) : (
-          // Render a loading state or handle the absence of data as needed
+          // While not loaded
           <Text>Loading...</Text>
         )}
       </ScrollView>
-      <Footer navigation={navigation} price={flatOffer.price} />
+      {flatOfferData && reservationData && (
+        <Footer navigation={navigation} price={flatOffer.price} data={reservationData} />
+      )}
     </View>
   );
 };
