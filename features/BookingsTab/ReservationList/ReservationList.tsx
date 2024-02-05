@@ -153,7 +153,7 @@ const ReservationList = ({ route, navigation }) => {
               color: theme.colors.error,
             }}
             variant="headlineSmall">
-            Error while fetching resources.
+            {translations.ERROR_WHILE_FETCHING_RESOURCES[settings.language]}
           </Text>
         </RefreshControl>
       ) : loading ? (

@@ -1,8 +1,13 @@
+import { useContext } from "react";
 import { View } from "react-native";
 import { IconButton, useTheme, Text } from "react-native-paper";
 
+import SettingsContext from "../../../../contexts/SettingsContext";
+import translations from "../../../../preferences/translations";
+
 const Header = ({ route, navigation }) => {
   const theme = useTheme();
+  const { settings } = useContext(SettingsContext);
 
   return (
     <View
@@ -30,7 +35,7 @@ const Header = ({ route, navigation }) => {
           position: "absolute",
           width: "100%",
         }}>
-        Reservation details
+        {translations.RESERVATION_DETAILS[settings.language]}
       </Text>
     </View>
   );

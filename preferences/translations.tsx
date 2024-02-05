@@ -1,4 +1,13 @@
 type TranslationsKeys =
+  | "CHECK_IN"
+  | "CHECK_OUT"
+  | "EXACT_ADDRESS"
+  | "CONTACT"
+  | "BOOKED"
+  | "PRICE"
+  | "CANCEL_RESERVATION"
+  | "GO_BACK"
+  | "RESERVATION_DETAILS"
   | "ACTIVE"
   | "PASSED"
   | "CANCELLED"
@@ -362,8 +371,8 @@ const translations: Translations = {
     "pl-PL": "Ocena",
   },
   ROOM: {
-    "en-US": "Room",
-    "pl-PL": "Pokój",
+    "en-US": "Room/s",
+    "pl-PL": "Pokój/e",
   },
   ROOMS_AND_BEDS: {
     "en-US": "Rooms and beds",
@@ -624,6 +633,42 @@ const translations: Translations = {
   CANCELLED: {
     "en-US": "Cancelled",
     "pl-PL": "Anulowane",
+  },
+  CHECK_IN: {
+    "en-US": "Check in",
+    "pl-PL": "Meldunek",
+  },
+  CHECK_OUT: {
+    "en-US": "Check out",
+    "pl-PL": "Wymeldunek",
+  },
+  EXACT_ADDRESS: {
+    "en-US": "Exact address",
+    "pl-PL": "Dokładny adres",
+  },
+  CONTACT: {
+    "en-US": "Contact",
+    "pl-PL": "Kontant",
+  },
+  BOOKED: {
+    "en-US": "Booked",
+    "pl-PL": "Zarezerwowano",
+  },
+  PRICE: {
+    "en-US": "Price",
+    "pl-PL": "Cena",
+  },
+  CANCEL_RESERVATION: {
+    "en-US": "Cancel reservation",
+    "pl-PL": "Anuluj rezerwacje",
+  },
+  GO_BACK: {
+    "en-US": "Go back",
+    "pl-PL": "Cofnij",
+  },
+  RESERVATION_DETAILS: {
+    "en-US": "Reservation details",
+    "pl-PL": "Szczegóły rezerwacji",
   },
 };
 
