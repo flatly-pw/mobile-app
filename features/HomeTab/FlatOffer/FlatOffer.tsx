@@ -99,8 +99,8 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
         postalCode: fetchedPostalCode,
         city: fetchedCity,
         country: fetchedCountry,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         nightsCount: daysDifference,
         adults: filters.adults === 0 ? 1 : filters.adults,
         children: filters.children,
@@ -185,7 +185,6 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
                 </Text>
               </View>
             </View>
-            <Text>{reservationData.flatId}1</Text>
             <Gallery imageSource={flatOfferData.gallery} />
             <BasicDetails data={flatOfferData} />
             <Description data={flatOfferData} />

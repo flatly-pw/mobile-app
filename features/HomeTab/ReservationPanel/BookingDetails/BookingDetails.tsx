@@ -45,8 +45,7 @@ const BookingDetails = ({ data }) => {
         </View>
         <View style={styles.itemContainer}>
           <Text style={{ paddingTop: 17, fontSize: 14, marginLeft: -100 }}>
-            {data.startDate.toISOString().split("T")[0]} -{" "}
-            {data.endDate.toISOString().split("T")[0]} {"\n"}({data.nightsCount} nights)
+            {data.startDate} - {data.endDate} {"\n"}({data.nightsCount} nights)
           </Text>
         </View>
         <View style={styles.itemContainer}>

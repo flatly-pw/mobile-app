@@ -133,7 +133,6 @@ const PaymentPanel = ({ route, navigation }) => {
               setIsError(true);
               return;
             }
-            console.log(JSON.stringify(reservationPostData));
 
             const response = await fetch(process.env.EXPO_PUBLIC_API_URL + "/reservation", {
               method: "POST",

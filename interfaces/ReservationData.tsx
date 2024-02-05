@@ -3,8 +3,8 @@ export default interface ReservationData {
   postalCode: string;
   city: string;
   country: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   nightsCount: number;
   adults: number;
   children: number;
