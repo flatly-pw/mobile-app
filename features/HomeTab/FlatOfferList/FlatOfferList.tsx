@@ -110,7 +110,9 @@ const FlatOfferList = ({ route, navigation }) => {
       // just refetch after error
       if (response.status === 401) {
         setTimeout(() => {
-          fetchFlats(fetchPage);
+          if (!loading && isError && flatOffers.length === 0) {
+            fetchFlats(fetchPage);
+          }
         }, 1000);
       } else {
         setIsError(true);

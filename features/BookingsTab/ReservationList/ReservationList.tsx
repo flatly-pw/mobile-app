@@ -74,7 +74,9 @@ const ReservationList = ({ route, navigation }) => {
       // just refetch after error
       if (response.status === 401) {
         setTimeout(() => {
-          fetchReservations(fetchPage);
+          if (!loading && isError && reservations.length === 0) {
+            fetchReservations(fetchPage);
+          }
         }, 1000);
       } else {
         setIsError(true);
