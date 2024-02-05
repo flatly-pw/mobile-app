@@ -12,4 +12,6 @@ export default interface ReservationData {
   price: number;
   flatId: string;
   specialRequests: string;
+  latitude: number;
+  longitude: number;
 }

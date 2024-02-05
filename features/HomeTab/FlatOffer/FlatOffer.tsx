@@ -108,6 +108,8 @@ const FlatOffer = ({ route, navigation, bottomTabsRoute, bottomTabsNavigation, f
         price: flatOffer.price,
         flatId: flatOffer.id,
         specialRequests: "",
+        latitude: fetchedLatitude,
+        longitude: fetchedLongitude,
       });
     } catch (e) {
       setIsError(true);
