@@ -6,11 +6,11 @@ import AdvancedFilter from "./AdvancedFilter/AdvancedFilter";
 import BasicFilter from "./BasicFilter/BasicFilter";
 import FlatOffer from "./FlatOffer/FlatOffer";
 import FlatOfferList from "./FlatOfferList/FlatOfferList";
+import PaymentPanel from "./PaymentPanel/PaymentPanel";
 import ReservationPanel from "./ReservationPanel/ReservationPanel";
 import SafeAreaScreenWrapper from "../../components/SafeAreaScreenWrapper/SafeAreaScreenWrapper";
 import FiltersContext from "../../contexts/FiltersContext";
 import Filters from "../../interfaces/Filters";
-import PaymentPanel from "./PaymentPanel/PaymentPanel";
 
 interface HomeTabProps {
   route: any;
