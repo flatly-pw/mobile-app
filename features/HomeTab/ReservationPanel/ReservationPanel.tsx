@@ -21,8 +21,12 @@ const ReservationPanel = ({ route, navigation, filters }) => {
   const [request, setRequest] = useState("");
   const [displayErrors, setDisplayErrors] = useState(false);
   const [officelyData, setOfficelyData] = useState<OfficelyData>();
+  const [officelyToken, setOfficelyToken] = useState("");
+  const [isOfficelyAvailable, setIsOfficelyAvailable] = useState(true);
 
   const { data } = route.params;
+
+  const [isOfficeReservation, setIsOfficeReservation] = useState(false);
 
   const isNumeric = (input) => {
     // Use a regular expression to check if the input contains only digits
@@ -141,6 +145,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
 
   const setDataFromFetch = (data: any) => {
     try {
+      const fetchedId = data.id;
       const fetchedName = data.name;
       const fetchedPricePerDay = data.pricePerDay;
       const fetchedAddress = data.address;
@@ -148,6 +153,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
       const fetchedRating = data.rating;
       const fetchedOfficeArea = data.officeArea;
       setOfficelyData({
+        id: fetchedId,
         name: fetchedName,
         pricePerDay: fetchedPricePerDay,
         address: fetchedAddress,
@@ -176,6 +182,7 @@ const ReservationPanel = ({ route, navigation, filters }) => {
       if (response.ok) {
         const responseData = await response.json();
         const userToken = responseData.jwttoken;
+        setOfficelyToken(responseData.jwttoken);
         const searchResponse = await fetch(
           "https://officely.azurewebsites.net/offices?pageSize=10&pageNum=0&availableFrom=" +
             data.startDate +
@@ -193,22 +200,30 @@ const ReservationPanel = ({ route, navigation, filters }) => {
           }
         );
 
+        if (!searchResponse.ok) {
+          setIsOfficelyAvailable(false);
+        }
+
         if (searchResponse.ok) {
           const fetchedData = await searchResponse.json();
-          const officeId = fetchedData[Math.floor(Math.random() * fetchedData.length)].id;
-          const officeResponse = await fetch(
-            "https://officely.azurewebsites.net/offices/" + officeId,
-            {
-              method: "GET",
-              headers: {
-                Authorization: "Bearer " + userToken,
-              },
-            }
-          );
+          if (fetchedData.length === 0) {
+            setIsOfficelyAvailable(false);
+          } else {
+            const officeId = fetchedData[Math.floor(Math.random() * fetchedData.length)].id;
+            const officeResponse = await fetch(
+              "https://officely.azurewebsites.net/offices/" + officeId,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: "Bearer " + userToken,
+                },
+              }
+            );
 
-          if (officeResponse.ok) {
-            const officeData = await officeResponse.json();
-            setDataFromFetch(officeData);
+            if (officeResponse.ok) {
+              const officeData = await officeResponse.json();
+              setDataFromFetch(officeData);
+            }
           }
         }
       }
@@ -221,10 +236,26 @@ const ReservationPanel = ({ route, navigation, filters }) => {
     <View style={{ height: "100%", marginTop: 10 }}>
       <Header navigation={navigation} />
       <ScrollView>
-        {officelyData ? (
+        {officelyData || !isOfficelyAvailable ? (
           <View>
             <BookingDetails data={data} />
-            <OfficelyWindow data={officelyData} />
+            {isOfficelyAvailable ? (
+              <OfficelyWindow
+                data={officelyData}
+                isOfficeReservation={isOfficeReservation}
+                setIsOfficeReservation={setIsOfficeReservation}
+              />
+            ) : (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  marginBottom: 30,
+                }}>
+                Unfortunately we could not find any Officely offers for you
+              </Text>
+            )}
+
             <Text
               style={{
                 textAlign: "center",
@@ -330,7 +361,12 @@ const ReservationPanel = ({ route, navigation, filters }) => {
                   postCodeValid &&
                   countryValid
                 ) {
-                  navigation.navigate("PaymentPanel", { data });
+                  navigation.navigate("PaymentPanel", {
+                    reservationData: data,
+                    officelyData: officelyData,
+                    isOfficeReservation: isOfficeReservation,
+                    officelyToken: officelyToken,
+                  });
                 } else {
                   setDisplayErrors(true);
                 }

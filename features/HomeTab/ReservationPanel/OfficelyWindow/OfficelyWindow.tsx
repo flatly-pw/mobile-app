@@ -9,7 +9,7 @@ import translations from "../../../../preferences/translations";
 import getPriceWithCurrency from "../../../../preferences/currencies";
 import Gallery from "../Gallery/Gallery";
 
-const OfficelyWindow = ({ data }) => {
+const OfficelyWindow = ({ data, isOfficeReservation, setIsOfficeReservation }) => {
   const { settings } = useContext(SettingsContext);
   const theme = useTheme();
 
@@ -40,8 +40,9 @@ const OfficelyWindow = ({ data }) => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      setPlnRate(data.pln);
+      const rateData = await response.json();
+      setPlnRate(rateData.pln);
+      data.pricePerDay /= rateData.pln;
     } else {
       console.error(
         "Problem with fetch, status text:",
@@ -98,13 +99,14 @@ const OfficelyWindow = ({ data }) => {
           <Button
             style={{ flex: 1, alignItems: "flex-start" }}
             labelStyle={theme.fonts.titleMedium}>
-            {getPriceWithCurrency(data.pricePerDay / plnRate, settings.currency, 0)} per day
+            {getPriceWithCurrency(data.pricePerDay, settings.currency, 0)} per day
           </Button>
           <Button
             style={{ alignItems: "flex-end" }}
             mode="outlined"
-            labelStyle={theme.fonts.titleMedium}>
-            Add to reservation
+            labelStyle={theme.fonts.titleMedium}
+            onPress={() => setIsOfficeReservation(!isOfficeReservation)}>
+            {isOfficeReservation ? "Added to reservation" : "Add to reservation"}
           </Button>
         </View>
       ) : (
