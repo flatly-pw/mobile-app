@@ -81,8 +81,8 @@ const PaymentPanel = ({ route, navigation }) => {
         {
           userId: 8,
           officeId: officelyData.id,
-          startDateTime: reservationData.startDate + "T00:00:00.000Z",
-          endDateTime: reservationData.endDate + "T00:00:00.000Z",
+          startDateTime: reservationData.startDate + "T00:00:00",
+          endDateTime: reservationData.endDate + "T00:00:00",
         },
       ]);
     }
