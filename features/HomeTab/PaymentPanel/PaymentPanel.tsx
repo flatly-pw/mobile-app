@@ -6,8 +6,8 @@ import { Button, Text } from "react-native-paper";
 import CustomTextInput from "./CustomTextInput";
 import Header from "./Header/Header";
 import SettingsContext from "../../../contexts/SettingsContext";
-import getPriceWithCurrency from "../../../preferences/currencies";
 import ReservationPostData from "../../../interfaces/ReservationPostData";
+import getPriceWithCurrency from "../../../preferences/currencies";
 
 const PaymentPanel = ({ route, navigation }) => {
   const { data } = route.params;
@@ -84,7 +84,6 @@ const PaymentPanel = ({ route, navigation }) => {
         }}>
         Total price: {getPriceWithCurrency(data.price * data.nightsCount, settings.currency, 2)}
       </Text>
-      <Text>{JSON.stringify(reservationPostData)}</Text>
       <CustomTextInput
         label="Card owner name (*)"
         value={cardOwnerName}
