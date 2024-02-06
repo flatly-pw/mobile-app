@@ -91,8 +91,11 @@ const ReservationListItem = ({ route, navigation, reservation }: ReservationList
                 justifyContent: "center",
               }}>
               <View>
-                <Text style={{ fontWeight: "bold" }} variant="headlineMedium">
-                  {reservation.title}, {reservation.city}
+                <Text style={{ fontWeight: "bold" }} variant="headlineSmall">
+                  {reservation.title},
+                </Text>
+                <Text style={{ fontWeight: "bold" }} variant="headlineSmall">
+                  {reservation.city}
                 </Text>
                 <Text variant="headlineSmall">{createReservationDate()}</Text>
                 <Text variant="labelLarge">

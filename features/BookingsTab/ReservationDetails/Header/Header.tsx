@@ -29,7 +29,7 @@ const Header = ({ route, navigation }) => {
         style={{ zIndex: 1 }}
       />
       <Text
-        variant="displaySmall"
+        variant="headlineMedium"
         style={{
           textAlign: "center",
           position: "absolute",
