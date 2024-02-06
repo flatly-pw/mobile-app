@@ -92,7 +92,10 @@ const ReservationListItem = ({ route, navigation, reservation }: ReservationList
               }}>
               <View>
                 <Text style={{ fontWeight: "bold" }} variant="headlineSmall">
-                  {reservation.title}, {reservation.city}
+                  {reservation.title},
+                </Text>
+                <Text style={{ fontWeight: "bold" }} variant="headlineSmall">
+                  {reservation.city}
                 </Text>
                 <Text variant="headlineSmall">{createReservationDate()}</Text>
                 <Text variant="labelLarge">
