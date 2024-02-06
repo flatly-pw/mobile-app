@@ -26,7 +26,7 @@ const ReservationList = ({ route, navigation }) => {
   const [page, setPage] = useState(0);
 
   const createFilterParameters = (fetchPage: number) => {
-    let params = `?page=${fetchPage}&pageSize=10`;
+    let params = `?page=${fetchPage}&pageSize=100`;
     params += `&filter=${status}`;
     return params;
   };
